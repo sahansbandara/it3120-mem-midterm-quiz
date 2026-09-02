@@ -1,0 +1,2208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IT3120 Modern Enterprise Management - Exam Prep</title>
+  <meta name="description" content="Prepare for IT3120 Modern Enterprise Management with interactive practice questions, instant feedback, explanations, and exam-focused revision." />
+  <meta name="keywords" content="IT3120, Modern Enterprise Management, MEM, SLIIT, exam prep, practice quiz, MCQ, management revision" />
+  <meta name="author" content="Sahan Sandaruwan" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://sahansbandara.github.io/it3120-mem-midterm-quiz/Quiz.html" />
+  <style>
+    :root {
+      --primary-blue: #0284c7;
+      --primary-dark: #0369a1;
+      --primary-light: #e0f2fe;
+      --navy: #0f172a;
+      --card-bg: #ffffff;
+      --page-bg: #f8fafc;
+      --border-color: #e2e8f0;
+      --text-main: #334155;
+      --text-muted: #64748b;
+      --correct-bg: #dcfce7;
+      --correct-border: #22c55e;
+      --correct-text: #15803d;
+      --wrong-bg: #fee2e2;
+      --wrong-border: #ef4444;
+      --wrong-text: #b91c1c;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    }
+
+    body {
+      background-color: var(--page-bg);
+      color: var(--text-main);
+      line-height: 1.5;
+      padding-bottom: 60px;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%);
+      color: #ffffff;
+      padding: 32px 20px;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+      position: relative;
+    }
+
+    header h1 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      margin-bottom: 6px;
+    }
+
+    header p {
+      color: var(--primary-light);
+      font-size: 0.95rem;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+
+    .stats-bar {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px 24px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      align-items: center;
+      gap: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .tabs-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .tab-btn {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .tab-btn:hover {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      border-color: var(--primary-blue);
+    }
+
+    .tab-btn.active {
+      background: var(--primary-blue);
+      color: #ffffff;
+      border-color: var(--primary-blue);
+      box-shadow: var(--shadow-md);
+    }
+
+    .question-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.2s ease;
+    }
+
+    .question-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .q-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .q-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.025em;
+      text-transform: uppercase;
+    }
+
+    .badge-mcq {
+      background-color: #dbeafe;
+      color: #1e40af;
+    }
+
+    .badge-maq {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+
+    .q-num {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .q-text {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 16px;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 16px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      cursor: pointer;
+      background: #ffffff;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+
+    .option-item:hover {
+      background-color: var(--primary-light);
+      border-color: #93c5fd;
+    }
+
+    .option-item input {
+      margin-top: 4px;
+      cursor: pointer;
+      accent-color: var(--primary-blue);
+    }
+
+    .option-item.correct {
+      background-color: var(--correct-bg) !important;
+      border-color: var(--correct-border) !important;
+      color: var(--correct-text) !important;
+      font-weight: 600;
+    }
+
+    .option-item.wrong {
+      background-color: var(--wrong-bg) !important;
+      border-color: var(--wrong-border) !important;
+      color: var(--wrong-text) !important;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s ease;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-blue);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background-color: #f1f5f9;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background-color: #e2e8f0;
+    }
+
+    .feedback-box {
+      margin-top: 16px;
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      display: none;
+      border-left: 4px solid;
+    }
+
+    .feedback-correct {
+      background-color: #f0fdf4;
+      border-color: var(--correct-border);
+      color: #166534;
+    }
+
+    .feedback-wrong {
+      background-color: #fef2f2;
+      border-color: var(--wrong-border);
+      color: #991b1b;
+    }
+
+    .feedback-box .rationale {
+      margin-top: 6px;
+      font-size: 0.85rem;
+      color: var(--text-main);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 640px) {
+      .container { padding: 12px; }
+      .question-card { padding: 16px; }
+      header h1 { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>IT3120 Modern Enterprise Management</h1>
+    <p>120-Question Comprehensive Midterm Bank (MCQs &amp; MAQs)</p>
+  </header>
+
+  <div class="container">
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-value" id="answered-count">0</div>
+        <div class="stat-label">Answered</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="correct-count">0</div>
+        <div class="stat-label">Correct</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="score-percentage">0%</div>
+        <div class="stat-label">Accuracy</div>
+      </div>
+    </div>
+
+    <div class="tabs-nav">
+      <button class="tab-btn active" onclick="filterLecture('all', this)">All Lectures (120)</button>
+      <button class="tab-btn" onclick="filterLecture(1, this)">L1: Management (20)</button>
+      <button class="tab-btn" onclick="filterLecture(2, this)">L2: Marketing 6.0 (20)</button>
+      <button class="tab-btn" onclick="filterLecture(3, this)">L3: Economics (20)</button>
+      <button class="tab-btn" onclick="filterLecture(4, this)">L4: HRM (20)</button>
+      <button class="tab-btn" onclick="filterLecture(5, this)">L5: Accounting (20)</button>
+      <button class="tab-btn" onclick="filterLecture(7, this)">L7: Legal &amp; Ethics (20)</button>
+    </div>
+
+    <div id="questions-wrapper"></div>
+  </div>
+
+  <script>
+    const questionsData = [
+      // -------------------------------------------------------------
+      // LECTURE 1: MANAGEMENT (Q1-Q20)
+      // -------------------------------------------------------------
+      {
+        id: 1,
+        lecture: 1,
+        type: "mcq",
+        question: "Which of the following describes the medieval Latin origin of the word 'organization' (organizationem)?",
+        options: [
+          "A biological system of organs",
+          "The act of organizing",
+          "A group of trade workers",
+          "A financial enterprise"
+        ],
+        answer: [1],
+        rationale: "The medieval Latin term 'organizationem' translates directly to 'the act of organizing'."
+      },
+      {
+        id: 2,
+        lecture: 1,
+        type: "mcq",
+        question: "Henri Fayol defined management primarily as a process involving which key functions?",
+        options: [
+          "Planning, organizing, leading, and controlling",
+          "Financing, marketing, selling, and auditing",
+          "Coding, testing, deploying, and debugging",
+          "Delegating, arbitrating, policing, and rewarding"
+        ],
+        answer: [0],
+        rationale: "Henri Fayol defined management as the structured process of planning, organizing, leading, and controlling organizational resources."
+      },
+      {
+        id: 3,
+        lecture: 1,
+        type: "mcq",
+        question: "Which aspect of management defines what organizational goals should be and creates structure for the firm?",
+        options: [
+          "The People aspect",
+          "The Process aspect",
+          "The Environmental aspect",
+          "The Political aspect"
+        ],
+        answer: [1],
+        rationale: "The Process aspect of management defines organizational goals and establishes structural systems to tackle them."
+      },
+      {
+        id: 4,
+        lecture: 1,
+        type: "mcq",
+        question: "Setting organizational goals, determining the best course of action, and formulating tactical actions belongs to which management function?",
+        options: [
+          "Organizing",
+          "Planning",
+          "Leading",
+          "Controlling"
+        ],
+        answer: [1],
+        rationale: "Planning identifies organizational objectives, develops forward-looking strategies, and bridges the gap to future targets."
+      },
+      {
+        id: 5,
+        lecture: 1,
+        type: "mcq",
+        question: "Which management function focuses on structuring resources, assigning responsibilities, and establishing authority relationships?",
+        options: [
+          "Organizing",
+          "Planning",
+          "Leading",
+          "Controlling"
+        ],
+        answer: [0],
+        rationale: "Organizing arranges tasks, groups activities into departments, and assigns operational authority."
+      },
+      {
+        id: 6,
+        lecture: 1,
+        type: "mcq",
+        question: "Inspiring workforce achievement, building commitment, and creating shared values represents which management function?",
+        options: [
+          "Planning",
+          "Controlling",
+          "Leading",
+          "Budgeting"
+        ],
+        answer: [2],
+        rationale: "Leading guides, motivates, communicates with, and influences team members to work toward goals."
+      },
+      {
+        id: 7,
+        lecture: 1,
+        type: "mcq",
+        question: "Establishing a feedback loop to monitor activities, compare actual outcomes with standards, and make corrections is known as:",
+        options: [
+          "Organizing",
+          "Controlling",
+          "Planning",
+          "Sourcing"
+        ],
+        answer: [1],
+        rationale: "Controlling measures performance, observes outcomes, and leverages the feedback loop to make adjustments."
+      },
+      {
+        id: 8,
+        lecture: 1,
+        type: "mcq",
+        question: "Which management level focuses on long-term organizational success, sets strategic goals, and monitors the external environment (e.g., CEOs, CTOs)?",
+        options: [
+          "First-Line Managers",
+          "Middle Managers",
+          "Top Managers",
+          "Team Leaders"
+        ],
+        answer: [2],
+        rationale: "Top managers (C-level executives) are responsible for overall enterprise direction, strategic goals, and external relations."
+      },
+      {
+        id: 9,
+        lecture: 1,
+        type: "mcq",
+        question: "Department heads and division directors who translate broad strategic plans into specific operational objectives are:",
+        options: [
+          "Top Managers",
+          "Middle Managers",
+          "Team Leaders",
+          "Non-managerial Employees"
+        ],
+        answer: [1],
+        rationale: "Middle managers act as the bridge between executive strategy and ground-level execution."
+      },
+      {
+        id: 10,
+        lecture: 1,
+        type: "mcq",
+        question: "Assistant managers, shift supervisors, and section chiefs who have direct, daily contact with non-managerial workers are classified as:",
+        options: [
+          "Top Managers",
+          "Strategic Coordinators",
+          "First-Line Managers",
+          "Executive Directors"
+        ],
+        answer: [2],
+        rationale: "First-line managers operate 'on the line' in direct contact with workers, executing day-to-day work plans."
+      },
+      {
+        id: 11,
+        lecture: 1,
+        type: "mcq",
+        question: "Which classical management approach emphasizes improving efficiency and productivity through standardized procedures, strict hierarchy, and control?",
+        options: [
+          "Behavioral Approach",
+          "Classical Approach",
+          "Modern Contingency Approach",
+          "Systems Approach"
+        ],
+        answer: [1],
+        rationale: "The Classical Approach focuses on hierarchy, specialized task division, standard operating procedures, and control."
+      },
+      {
+        id: 12,
+        lecture: 1,
+        type: "mcq",
+        question: "Which management approach relies on mathematical modeling, statistics, and data calculations to optimize resource allocation?",
+        options: [
+          "Behavioral Approach",
+          "Classical Approach",
+          "Quantitative Approach",
+          "Human Relations Approach"
+        ],
+        answer: [2],
+        rationale: "The Quantitative Approach uses mathematics, data models, and analytics to support decision-making."
+      },
+      {
+        id: 13,
+        lecture: 1,
+        type: "mcq",
+        question: "An organizational structure that groups employees based strictly on specialized functional roles (such as Marketing, Finance, and IT) is a:",
+        options: [
+          "Matrix Structure",
+          "Divisional Structure",
+          "Functional Structure",
+          "Decentralized Squad"
+        ],
+        answer: [2],
+        rationale: "Functional structures group workforce units by professional specialty (IT, Marketing, Operations)."
+      },
+      {
+        id: 14,
+        lecture: 1,
+        type: "mcq",
+        question: "Which type of power is derived from an individual’s formal hierarchical role or position in an enterprise?",
+        options: [
+          "Legitimate Power",
+          "Referent Power",
+          "Expert Power",
+          "Information Power"
+        ],
+        answer: [0],
+        rationale: "Legitimate power stems from a formal corporate title or supervisory role."
+      },
+      {
+        id: 15,
+        lecture: 1,
+        type: "mcq",
+        question: "According to Herzberg's Two-Factor Theory, which of the following is considered a Hygiene Factor?",
+        options: [
+          "Personal achievement",
+          "Recognition",
+          "Company policies and supervisor relationships",
+          "Career advancement"
+        ],
+        answer: [2],
+        rationale: "Company policies, salary, and supervision are Hygiene Factors; they prevent dissatisfaction but do not directly create long-term motivation."
+      },
+      {
+        id: 16,
+        lecture: 1,
+        type: "mcq",
+        question: "An employee working extra hours on a challenging software architecture simply for the joy of problem-solving is driven by:",
+        options: [
+          "Extrinsic Motivation",
+          "Intrinsic Motivation",
+          "Coercive Power",
+          "Hygiene Pressure"
+        ],
+        answer: [1],
+        rationale: "Intrinsic motivation originates from internal satisfaction, curiosity, and enjoyment of the task itself."
+      },
+      {
+        id: 17,
+        lecture: 1,
+        type: "maq",
+        question: "Which of the following are the primary levels of analysis in Organizational Behavior (OB)? (Select all that apply)",
+        options: [
+          "The Individual Level",
+          "The Group/Team Level",
+          "The Organizational Level",
+          "The Algorithmic Level"
+        ],
+        answer: [0, 1, 2],
+        rationale: "OB analyzes behavior across three distinct levels: Individual, Group/Team, and Organizational."
+      },
+      {
+        id: 18,
+        lecture: 1,
+        type: "maq",
+        question: "Which of the following are recognized forms of power in organizations? (Select all that apply)",
+        options: [
+          "Legitimate Power",
+          "Reward Power",
+          "Corrective (Coercive) Power",
+          "Expert Power",
+          "Referent Power"
+        ],
+        answer: [0, 1, 2, 3, 4],
+        rationale: "Legitimate, Reward, Corrective, Expert, and Referent are classical foundational bases of organizational power."
+      },
+      {
+        id: 19,
+        lecture: 1,
+        type: "maq",
+        question: "Which of the following are levels in Abraham Maslow’s Hierarchy of Needs? (Select all that apply)",
+        options: [
+          "Physiological Needs",
+          "Safety Needs",
+          "Social (Love and Belonging) Needs",
+          "Esteem Needs",
+          "Self-Actualization"
+        ],
+        answer: [0, 1, 2, 3, 4],
+        rationale: "Maslow's hierarchy encompasses Physiological, Safety, Social, Esteem, and Self-Actualization needs."
+      },
+      {
+        id: 20,
+        lecture: 1,
+        type: "maq",
+        question: "Which of the following are characteristics of a Flat Organizational Structure? (Select all that apply)",
+        options: [
+          "Fewer levels of management",
+          "Wider span of control",
+          "Faster decision-making and communication",
+          "Highly centralized command with strict micro-supervision"
+        ],
+        answer: [0, 1, 2],
+        rationale: "Flat structures feature fewer hierarchical layers, broader managerial spans of control, and streamlined communication channels."
+      },
+
+      // -------------------------------------------------------------
+      // LECTURE 2: MARKETING & MARKETING 6.0 (Q21-Q40)
+      // -------------------------------------------------------------
+      {
+        id: 21,
+        lecture: 2,
+        type: "mcq",
+        question: "What is the primary definition of Marketing in modern enterprise environments?",
+        options: [
+          "The immediate transactional act of selling existing stock to buyers",
+          "A human-centric, technology-enabled process of creating, communicating, delivering, and exchanging customer value",
+          "Running paid advertisements exclusively across social media channels",
+          "Cold calling prospects to meet short-term monthly revenue quotas"
+        ],
+        answer: [1],
+        rationale: "Modern marketing is a human-centric, technology-enabled framework for creating, communicating, and delivering value."
+      },
+      {
+        id: 22,
+        lecture: 2,
+        type: "mcq",
+        question: "Which of the following contrasts Selling with Marketing?",
+        options: [
+          "Selling is customer-focused; marketing is product-focused",
+          "Selling is long-term; marketing is short-term",
+          "Selling is transactional and short-term; marketing focuses on long-term relationships and customer needs",
+          "Selling requires advanced AI systems; marketing does not use technology"
+        ],
+        answer: [2],
+        rationale: "Selling focuses inward on moving existing products via short-term transactions; marketing focuses outward on satisfying customer needs over the long term."
+      },
+      {
+        id: 23,
+        lecture: 2,
+        type: "mcq",
+        question: "During which marketing era was the primary strategic focus centered on production efficiency and product features (Before 1960s)?",
+        options: [
+          "Product-Centric Era",
+          "Customer-Centric Era",
+          "Values-Driven Era",
+          "Marketing 6.0 Era"
+        ],
+        answer: [0],
+        rationale: "The pre-1960s era focused strictly on manufacturing capacity and production efficiency (Product-Centric Era)."
+      },
+      {
+        id: 24,
+        lecture: 2,
+        type: "mcq",
+        question: "In Kotler's strategic marketing hierarchy, what represents the tactical 'How' (such as daily ad campaigns and content creation)?",
+        options: [
+          "Vision",
+          "Strategy",
+          "Target Market",
+          "Execution"
+        ],
+        answer: [3],
+        rationale: "Execution translates high-level strategy into daily tactical activities (content creation, campaigns, ad spend)."
+      },
+      {
+        id: 25,
+        lecture: 2,
+        type: "mcq",
+        question: "The 4 Ps Marketing Mix consists of which foundational elements?",
+        options: [
+          "People, Process, Physical evidence, Performance",
+          "Product, Price, Place, Promotion",
+          "Planning, Positioning, Packaging, Profit",
+          "Platform, Pipeline, Program, Post"
+        ],
+        answer: [1],
+        rationale: "The foundational Marketing Mix consists of Product, Price, Place, and Promotion."
+      },
+      {
+        id: 26,
+        lecture: 2,
+        type: "mcq",
+        question: "Dividing a broad consumer market into distinct subgroups based on demographic, geographic, or behavioral traits is known as:",
+        options: [
+          "Positioning",
+          "Targeting",
+          "Segmentation",
+          "Branding"
+        ],
+        answer: [2],
+        rationale: "Segmentation divides a broad audience into identifiable subgroups with shared characteristics."
+      },
+      {
+        id: 27,
+        lecture: 2,
+        type: "mcq",
+        question: "Creating a unique and distinctive perception of a product or brand in the mind of the target consumer is termed:",
+        options: [
+          "Sourcing",
+          "Positioning",
+          "Segmentation",
+          "Auditing"
+        ],
+        answer: [1],
+        rationale: "Positioning establishes a distinct, appealing image and identity in the minds of prospective buyers."
+      },
+      {
+        id: 28,
+        lecture: 2,
+        type: "mcq",
+        question: "Which concept defines the unique value a company promises to deliver to customers, explaining why they should purchase its product over competitors?",
+        options: [
+          "Return on Investment",
+          "Customer Value Proposition (CVP)",
+          "Gearing Ratio",
+          "Cost Per Acquisition"
+        ],
+        answer: [1],
+        rationale: "The Customer Value Proposition (CVP) defines the unique value offering and competitive differentiation."
+      },
+      {
+        id: 29,
+        lecture: 2,
+        type: "mcq",
+        question: "Surveys, focus groups, and customer interviews conducted directly by a firm to gather fresh insights are examples of:",
+        options: [
+          "Secondary Data",
+          "Primary Data",
+          "Intangible Assets",
+          "Predictive Automation"
+        ],
+        answer: [1],
+        rationale: "Primary data refers to firsthand data collected directly by the organization through surveys, interviews, and direct observations."
+      },
+      {
+        id: 30,
+        lecture: 2,
+        type: "mcq",
+        question: "In technology product management, what is the primary role of a Minimum Viable Product (MVP)?",
+        options: [
+          "To release a fully finished, unalterable enterprise platform",
+          "To test core functionality and gather user feedback rapidly with minimal initial investment",
+          "To eliminate all quality assurance testing",
+          "To maximize short-term advertising revenues"
+        ],
+        answer: [1],
+        rationale: "An MVP enables teams to validate market hypotheses and iterate rapidly using direct user feedback."
+      },
+      {
+        id: 31,
+        lecture: 2,
+        type: "mcq",
+        question: "In which stage of the Product Life Cycle (PLC) do sales peak, market saturation occur, and competitive pressure intensify?",
+        options: [
+          "Introduction",
+          "Growth",
+          "Maturity",
+          "Decline"
+        ],
+        answer: [2],
+        rationale: "In the Maturity stage, sales reach peak saturation, and rivalry among competitors reaches its highest intensity."
+      },
+      {
+        id: 32,
+        lecture: 2,
+        type: "mcq",
+        question: "What is the core characteristic of Marketing 6.0?",
+        options: [
+          "Sole reliance on print media",
+          "Immersive, 'phygital' experiences combining physical environments with digital tools like AR, VR, and Spatial Computing",
+          "Complete removal of customer relationship management",
+          "Exclusively prioritizing transactional phone sales"
+        ],
+        answer: [1],
+        rationale: "Marketing 6.0 integrates physical and virtual experiences (phygital) through AR/VR, spatial computing, and real-time AI."
+      },
+      {
+        id: 33,
+        lecture: 2,
+        type: "mcq",
+        question: "Which digital marketing metric measures the percentage of email recipients or ad viewers who click on an embedded link?",
+        options: [
+          "Conversion Rate",
+          "Click-through Rate (CTR)",
+          "Bounce Rate",
+          "Exit Rate"
+        ],
+        answer: [1],
+        rationale: "Click-Through Rate (CTR) measures the proportion of ad impressions or recipients that convert into clicks."
+      },
+      {
+        id: 34,
+        lecture: 2,
+        type: "mcq",
+        question: "What is the primary objective of calculating Customer Lifetime Value (CLV) in CRM systems?",
+        options: [
+          "To assess the total profit generated across an entire customer relationship over time",
+          "To record daily software maintenance expenses",
+          "To eliminate server depreciation",
+          "To count the number of website pageviews"
+        ],
+        answer: [0],
+        rationale: "Customer Lifetime Value (CLV) calculates the total commercial value and repeated transactions generated by a customer over their relationship lifecycle."
+      },
+      {
+        id: 35,
+        lecture: 2,
+        type: "mcq",
+        question: "Which CRM platform is recognized for its inbound marketing tools, ease of use, and adoption among small and medium businesses?",
+        options: [
+          "Salesforce Marketing Cloud",
+          "HubSpot",
+          "SAP CRM",
+          "Oracle NetSuite"
+        ],
+        answer: [1],
+        rationale: "HubSpot is widely recognized for its inbound marketing capabilities and user-friendly interface suited for SMEs."
+      },
+      {
+        id: 36,
+        lecture: 2,
+        type: "mcq",
+        question: "Customer Experience (CX) encompasses:",
+        options: [
+          "The technical code quality of a product only",
+          "The overall perception and feelings a customer develops across all touchpoints with a brand",
+          "The internal job satisfaction of customer service representatives",
+          "The legal contracts signed during enterprise procurement"
+        ],
+        answer: [1],
+        rationale: "Customer Experience (CX) represents the cumulative emotional and cognitive perceptions across all interactions with an enterprise."
+      },
+      {
+        id: 37,
+        lecture: 2,
+        type: "maq",
+        question: "Which of the following constitute core enablers and technologies within Marketing 6.0? (Select all that apply)",
+        options: [
+          "Extended Reality (AR/VR)",
+          "Spatial Computing",
+          "Artificial Intelligence for real-time customer data processing",
+          "Internet of Things (IoT) for physical data capture"
+        ],
+        answer: [0, 1, 2, 3],
+        rationale: "XR, Spatial Computing, AI processing, and IoT sensors are the enablers powering Marketing 6.0."
+      },
+      {
+        id: 38,
+        lecture: 2,
+        type: "maq",
+        question: "Which of the following are direct benefits of deploying modern CRM tools in an enterprise? (Select all that apply)",
+        options: [
+          "Centralizing customer communication and purchase history",
+          "Enabling personalized messaging and targeted offers",
+          "Automating sales pipelines and customer support workflows",
+          "Eliminating the need to deliver customer value"
+        ],
+        answer: [0, 1, 2],
+        rationale: "CRM systems centralize data, automate workflows, and enable personalized retention campaigns."
+      },
+      {
+        id: 39,
+        lecture: 2,
+        type: "maq",
+        question: "Which of the following are measurable digital marketing metrics categorized under Engagement and Awareness? (Select all that apply)",
+        options: [
+          "Website Traffic and Pageviews",
+          "Average Session Duration",
+          "Bounce Rate",
+          "Debt-to-Equity Ratio"
+        ],
+        answer: [0, 1, 2],
+        rationale: "Traffic, session duration, and bounce rate measure online engagement; Debt-to-Equity is an accounting solvency metric."
+      },
+      {
+        id: 40,
+        lecture: 2,
+        type: "maq",
+        question: "Product Management operates at the intersection of which three core domains? (Select all that apply)",
+        options: [
+          "Available Technology",
+          "Strategic Business Goals",
+          "Problems and Needs from Clients (User Experience)",
+          "Statutory Tax Compliance"
+        ],
+        answer: [0, 1, 2],
+        rationale: "Product Management integrates Available Technology, Strategic Business Goals, and Client Needs/UX."
+      },
+
+      // -------------------------------------------------------------
+      // LECTURE 3: ECONOMICS (Q41-Q60)
+      // -------------------------------------------------------------
+      {
+        id: 41,
+        lecture: 3,
+        type: "mcq",
+        question: "What is the core definition of Economics?",
+        options: [
+          "The mechanical computation of corporate tax balances",
+          "The study of how society manages its scarce resources",
+          "The process of marketing digital software platforms",
+          "The legal enforcement of patent rights"
+        ],
+        answer: [1],
+        rationale: "Economics studies how individuals and institutions allocate scarce resources among competing uses."
+      },
+      {
+        id: 42,
+        lecture: 3,
+        type: "mcq",
+        question: "Which of the following is categorized as a survival Need rather than an economic Want?",
+        options: [
+          "Basic shelter and clean water",
+          "High-end gaming laptops",
+          "Overseas vacations",
+          "Designer luxury goods"
+        ],
+        answer: [0],
+        rationale: "Needs are survival essentials (food, water, shelter); discretionary goods are wants."
+      },
+      {
+        id: 43,
+        lecture: 3,
+        type: "mcq",
+        question: "The fundamental economic problem exists primarily because:",
+        options: [
+          "Government regulations eliminate market competition",
+          "Human wants are unlimited while productive resources are finite",
+          "Digital software can be copied infinitely",
+          "Fixed costs always exceed variable costs"
+        ],
+        answer: [1],
+        rationale: "Scarcity arises because human wants have no ceiling while economic resources are limited."
+      },
+      {
+        id: 44,
+        lecture: 3,
+        type: "mcq",
+        question: "In economic terms, Opportunity Cost refers to:",
+        options: [
+          "The total accounting cost recorded on an invoice",
+          "The value of the next-best alternative forgone when making a decision",
+          "The price of variable inputs used during production",
+          "Sunk expenses that cannot be recovered"
+        ],
+        answer: [1],
+        rationale: "Opportunity cost is the benefit or value of the highest-value alternative sacrificed when choosing an option."
+      },
+      {
+        id: 45,
+        lecture: 3,
+        type: "mcq",
+        question: "What does the Law of Demand state regarding the relationship between price and quantity demanded (ceteris paribus)?",
+        options: [
+          "As price rises, quantity demanded rises",
+          "There is an inverse relationship: as price rises, quantity demanded falls",
+          "Demand remains constant regardless of price adjustments",
+          "Price and demand shift parallel to each other"
+        ],
+        answer: [1],
+        rationale: "The Law of Demand establishes an inverse relationship: as price increases, quantity demanded decreases."
+      },
+      {
+        id: 46,
+        lecture: 3,
+        type: "mcq",
+        question: "A change in which variable causes a movement along the demand curve rather than a shift of the curve?",
+        options: [
+          "Consumer income levels",
+          "The price of the good itself",
+          "Prices of related substitute goods",
+          "Consumer tastes and preferences"
+        ],
+        answer: [1],
+        rationale: "A change in a good's own price causes a movement along its demand curve; external determinants shift the curve."
+      },
+      {
+        id: 47,
+        lecture: 3,
+        type: "mcq",
+        question: "If a tech firm releases an AI development tool and competing developers enter the market en masse, how does this shift the market supply curve?",
+        options: [
+          "Inward shift to the left",
+          "Outward shift to the right",
+          "Upward movement along the curve",
+          "Demand shifts leftward instantly"
+        ],
+        answer: [1],
+        rationale: "An increase in the total number of sellers expands total market supply, shifting the supply curve rightward."
+      },
+      {
+        id: 48,
+        lecture: 3,
+        type: "mcq",
+        question: "At a market price where the quantity supplied (QS) is greater than the quantity demanded (QD), what condition exists in the marketplace?",
+        options: [
+          "Shortage",
+          "Surplus",
+          "Perfect Inelasticity",
+          "Diseconomy of Scale"
+        ],
+        answer: [1],
+        rationale: "When quantity supplied exceeds quantity demanded, an economic surplus exists."
+      },
+      {
+        id: 49,
+        lecture: 3,
+        type: "mcq",
+        question: "If a 20% price hike on a luxury digital asset causes sales volume to plummet by 60%, the demand for that asset is:",
+        options: [
+          "Inelastic",
+          "Elastic",
+          "Unitary",
+          "Perfectly Inelastic"
+        ],
+        answer: [1],
+        rationale: "When the percentage change in quantity demanded exceeds the percentage change in price, demand is price-elastic."
+      },
+      {
+        id: 50,
+        lecture: 3,
+        type: "mcq",
+        question: "Expenses that remain constant regardless of whether an IT firm produces 0 units or 10,000 units of software are called:",
+        options: [
+          "Variable Costs",
+          "Marginal Costs",
+          "Fixed Costs",
+          "Opportunity Costs"
+        ],
+        answer: [2],
+        rationale: "Fixed costs (such as office rent and baseline infrastructure) do not vary with short-run output volume."
+      },
+      {
+        id: 51,
+        lecture: 3,
+        type: "mcq",
+        question: "The additional cost incurred from producing one extra unit of output is defined as:",
+        options: [
+          "Average Total Cost",
+          "Marginal Cost",
+          "Average Variable Cost",
+          "Sunk Cost"
+        ],
+        answer: [1],
+        rationale: "Marginal Cost (MC) measures the incremental change in total cost resulting from producing one additional unit."
+      },
+      {
+        id: 52,
+        lecture: 3,
+        type: "mcq",
+        question: "If an IT startup incurs $3,000 in monthly office rent and pays $10 per active user in third-party API processing costs, what is the Total Cost (TC) for servicing 100 users?",
+        options: [
+          "$3,010",
+          "$4,000",
+          "$1,000",
+          "$30,000"
+        ],
+        answer: [1],
+        rationale: "Total Cost = Fixed Cost + (Variable Cost × Q) = $3000 + ($10 × 100) = $4000."
+      },
+      {
+        id: 53,
+        lecture: 3,
+        type: "mcq",
+        question: "What mathematical relationship dictates the bottom (minimum point) of the U-shaped Average Total Cost (ATC) curve?",
+        options: [
+          "The AFC curve equals zero",
+          "The Marginal Cost (MC) curve intersects the ATC curve at its minimum",
+          "Variable costs are completely eliminated",
+          "Total revenue equals fixed costs"
+        ],
+        answer: [1],
+        rationale: "The Marginal Cost curve intersects the Average Total Cost curve exactly at the ATC minimum."
+      },
+      {
+        id: 54,
+        lecture: 3,
+        type: "mcq",
+        question: "A customer is willing to pay up to $70 for a software package but purchases it on sale for $45. What is the Consumer Surplus?",
+        options: [
+          "$115",
+          "$25",
+          "$45",
+          "$70"
+        ],
+        answer: [1],
+        rationale: "Consumer Surplus = Willingness to Pay - Actual Price = $70 - $45 = $25."
+      },
+      {
+        id: 55,
+        lecture: 3,
+        type: "mcq",
+        question: "A digital hosting firm sells a storage tier for $100, which costs $65 to provide. What is the Producer Surplus (Producer Benefit)?",
+        options: [
+          "$35",
+          "$65",
+          "$165",
+          "$100"
+        ],
+        answer: [0],
+        rationale: "Producer Surplus = Market Price Received - Production Cost = $100 - $65 = $35."
+      },
+      {
+        id: 56,
+        lecture: 3,
+        type: "mcq",
+        question: "How does Artificial Intelligence (AI) assist enterprises in cost calculations and management?",
+        options: [
+          "By eliminating all variable production expenses entirely",
+          "By automating data analytics to predict resource scaling, track fixed/variable costs, and calculate optimal marginal cost levels",
+          "By legally overriding intellectual property laws",
+          "By fixing consumer market prices permanently"
+        ],
+        answer: [1],
+        rationale: "AI models optimize cost calculations by forecasting variable cloud consumption, tracking fixed allocations, and analyzing marginal costs."
+      },
+      {
+        id: 57,
+        lecture: 3,
+        type: "maq",
+        question: "Which of the following resources are considered scarce factors of production in economic theory? (Select all that apply)",
+        options: [
+          "Land and physical space",
+          "Labor and human skills",
+          "Capital and technology",
+          "Time"
+        ],
+        answer: [0, 1, 2, 3],
+        rationale: "Land, labor, capital, technology, and time are finite economic resources subjected to scarcity."
+      },
+      {
+        id: 58,
+        lecture: 3,
+        type: "maq",
+        question: "Which of the following factors will cause a shift in the market Demand Curve? (Select all that apply)",
+        options: [
+          "Changes in consumer income levels",
+          "Shifts in consumer tastes and preferences",
+          "Price fluctuations of substitute or complementary goods",
+          "Future price expectations"
+        ],
+        answer: [0, 1, 2, 3],
+        rationale: "Income, preferences, substitute/complement prices, and future expectations shift the entire demand curve."
+      },
+      {
+        id: 59,
+        lecture: 3,
+        type: "maq",
+        question: "Which of the following statements regarding cost metrics are correct? (Select all that apply)",
+        options: [
+          "Average Total Cost (ATC) = Average Fixed Cost (AFC) + Average Variable Cost (AVC)",
+          "AFC continuously declines as production volume increases",
+          "Marginal Cost (MC) measures ΔTC / ΔQ",
+          "Total fixed costs increase when production output increases"
+        ],
+        answer: [0, 1, 2],
+        rationale: "ATC = AFC + AVC; AFC trends downward as output increases; MC = ΔTC / ΔQ. Total fixed costs remain constant."
+      },
+      {
+        id: 60,
+        lecture: 3,
+        type: "maq",
+        question: "Which of the following characterize a Neoclassical Market Model? (Select all that apply)",
+        options: [
+          "Buyers and sellers exhibit rational economic behavior",
+          "Price adjustments clear shortages and surpluses to reach equilibrium",
+          "In perfect competition, no single buyer or seller can unilaterally dictate prices",
+          "Monopolistic cartels control all factor markets permanently"
+        ],
+        answer: [0, 1, 2],
+        rationale: "Neoclassical economics assumes rational actors, self-clearing market equilibrium, and price-taking in competitive markets."
+      },
+
+      // -------------------------------------------------------------
+      // LECTURE 4: HRM (Q61-Q80)
+      // -------------------------------------------------------------
+      {
+        id: 61,
+        lecture: 4,
+        type: "mcq",
+        question: "What is the primary definition of Human Resource Management (HRM) according to Michael Armstrong?",
+        options: [
+          "An administrative office that manages payroll taxes and physical equipment",
+          "A strategic and coherent approach to managing people as key organizational assets",
+          "A disciplinary mechanism for dismissing low-performing staff",
+          "A method of replacing permanent labor with third-party freelancers"
+        ],
+        answer: [1],
+        rationale: "Armstrong defines HRM as a strategic and coherent system to manage human talent as core organizational assets."
+      },
+      {
+        id: 62,
+        lecture: 4,
+        type: "mcq",
+        question: "Why is HRM critical in the Information Technology (IT) industry?",
+        options: [
+          "Because IT organizations rely heavily on specialized human capital and talent for innovation and competitiveness",
+          "Because IT hardware eliminates the need for software engineering teams",
+          "Because labor laws do not apply to computing enterprises",
+          "Because IT products require no continuous learning or skill adaptation"
+        ],
+        answer: [0],
+        rationale: "IT competitiveness depends on high-quality technical skills, specialized development expertise, and talent retention."
+      },
+      {
+        id: 63,
+        lecture: 4,
+        type: "mcq",
+        question: "In the HR recruitment process, what is the specific outcome of Workforce Planning?",
+        options: [
+          "Onboarding new recruits into corporate culture",
+          "Identifying talent requirements and skill gaps needed to support upcoming business projects",
+          "Drafting final employee termination notices",
+          "Evaluating quarterly financial income statements"
+        ],
+        answer: [1],
+        rationale: "Workforce Planning systematically identifies organizational talent shortages and project hiring needs."
+      },
+      {
+        id: 64,
+        lecture: 4,
+        type: "mcq",
+        question: "Which recruitment stage involves defining the specific tasks, duties, and responsibilities (Job Description) as well as the required skills and qualifications (Job Specification)?",
+        options: [
+          "Sourcing Candidates",
+          "Job Analysis",
+          "Induction",
+          "Screening"
+        ],
+        answer: [1],
+        rationale: "Job Analysis produces both the functional Job Description and the competency Job Specification."
+      },
+      {
+        id: 65,
+        lecture: 4,
+        type: "mcq",
+        question: "Using automated applicant tracking systems (ATS), online coding portals, and social platforms like LinkedIn to recruit developers is termed:",
+        options: [
+          "Autocratic Sourcing",
+          "E-Recruitment / Digital Recruitment",
+          "Gearing Acquisition",
+          "Contingency Screening"
+        ],
+        answer: [1],
+        rationale: "Digital recruitment leverages online portals, automated screening, and professional social platforms."
+      },
+      {
+        id: 66,
+        lecture: 4,
+        type: "mcq",
+        question: "What is the modern view of Performance Management in agile IT enterprises?",
+        options: [
+          "A one-time annual evaluation focused on past mistakes",
+          "A continuous, systematic cycle of planning, monitoring, reviewing, and developing capabilities",
+          "A mechanism to avoid paying project bonuses",
+          "An automated algorithm that replaces project leadership"
+        ],
+        answer: [1],
+        rationale: "Performance management is a continuous cycle of planning, acting, tracking, and professional development."
+      },
+      {
+        id: 67,
+        lecture: 4,
+        type: "mcq",
+        question: "Which component of performance management involves measuring employee achievements against agreed benchmarks (KPIs)?",
+        options: [
+          "Performance Planning",
+          "Performance Measurement",
+          "Workforce Sourcing",
+          "Job Analysis"
+        ],
+        answer: [1],
+        rationale: "Performance measurement assesses individual performance against agreed Key Performance Indicators (KPIs)."
+      },
+      {
+        id: 68,
+        lecture: 4,
+        type: "mcq",
+        question: "What is the core philosophy behind the Total Reward Concept?",
+        options: [
+          "Relying exclusively on base financial salary to motivate workers",
+          "Combining financial compensation with non-financial perks, recognition, learning, and work-life balance",
+          "Offering zero cash compensation in exchange for company stock",
+          "Eliminating all performance-related incentives"
+        ],
+        answer: [1],
+        rationale: "The Total Reward concept blends financial pay with non-financial rewards, growth opportunities, and flexibility."
+      },
+      {
+        id: 69,
+        lecture: 4,
+        type: "mcq",
+        question: "Which of the following is an example of a Non-Financial Reward?",
+        options: [
+          "Performance bonus",
+          "Flexible working hours and public recognition",
+          "Annual salary increment",
+          "Commission per closed contract"
+        ],
+        answer: [1],
+        rationale: "Flexibility, public praise, and recognition are non-financial rewards that foster motivation."
+      },
+      {
+        id: 70,
+        lecture: 4,
+        type: "mcq",
+        question: "Which leadership style is characterized by inviting team members to actively participate in project discussions and decision-making?",
+        options: [
+          "Autocratic Leadership",
+          "Democratic Leadership",
+          "Coercive Leadership",
+          "Bureaucratic Leadership"
+        ],
+        answer: [1],
+        rationale: "Democratic leadership encourages squad collaboration, employee participation, and consensus."
+      },
+      {
+        id: 71,
+        lecture: 4,
+        type: "mcq",
+        question: "A leader who inspires developers around a compelling transformation, encourages creative innovation, and builds shared purpose is a:",
+        options: [
+          "Transformational Leader",
+          "Transactional Leader",
+          "Task-Oriented Controller",
+          "Classical Manager"
+        ],
+        answer: [0],
+        rationale: "Transformational leaders inspire, motivate, and guide teams through innovation and organizational change."
+      },
+      {
+        id: 72,
+        lecture: 4,
+        type: "mcq",
+        question: "In an IT project setting, what is a primary distinction between a Traditional Manager and an Agile Team Leader (Scrum Master)?",
+        options: [
+          "The traditional manager facilitates self-organization, while the Scrum Master assigns daily tasks",
+          "The traditional manager focuses on control and task assignment, while the Scrum Master focuses on removing blockers and facilitating the team",
+          "The Scrum Master sets financial gearing targets for the board",
+          "The traditional manager writes all software code personally"
+        ],
+        answer: [1],
+        rationale: "Scrum Masters act as servant leaders who remove obstacles and support self-management rather than directing micro-tasks."
+      },
+      {
+        id: 73,
+        lecture: 4,
+        type: "mcq",
+        question: "Which negotiation approach is characterized by parties collaborating to find creative, mutually beneficial solutions that support long-term partnerships?",
+        options: [
+          "Competitive (Win-Lose) Negotiation",
+          "Collaborative (Win-Win) Negotiation",
+          "Avoidance Negotiation",
+          "Submissive Negotiation"
+        ],
+        answer: [1],
+        rationale: "Collaborative (Win-Win) negotiation aims to expand value and achieve joint gains while preserving relationships."
+      },
+      {
+        id: 74,
+        lecture: 4,
+        type: "mcq",
+        question: "Under the Big Five model, an engineer who demonstrates cooperativeness, high empathy, and a supportive team-oriented attitude is high in:",
+        options: [
+          "Agreeableness",
+          "Neuroticism",
+          "Autocratic Control",
+          "Extraversion"
+        ],
+        answer: [0],
+        rationale: "Agreeableness reflects high empathy, cooperativeness, and supportive interpersonal teamwork."
+      },
+      {
+        id: 75,
+        lecture: 4,
+        type: "mcq",
+        question: "What team challenge occurs when developers are uncertain about their exact job responsibilities, leading to overlapping work and conflict?",
+        options: [
+          "Cognitive Bias",
+          "Role Ambiguity",
+          "Transformational Lag",
+          "Intrinsic Friction"
+        ],
+        answer: [1],
+        rationale: "Role ambiguity occurs when boundaries, responsibilities, and expectations are poorly defined."
+      },
+      {
+        id: 76,
+        lecture: 4,
+        type: "mcq",
+        question: "In the IFS Sri Lanka case study, which strategy was proposed to address the challenge of developers leaving for remote international jobs?",
+        options: [
+          "Banning remote work across the enterprise",
+          "Strengthening employer branding, offering competitive compensation, and providing clear career development",
+          "Eliminating training budgets to reduce overhead costs",
+          "Assigning more mandatory overtime"
+        ],
+        answer: [1],
+        rationale: "Mitigating international turnover requires strong employer branding, market-competitive pay, and clear career paths."
+      },
+      {
+        id: 77,
+        lecture: 4,
+        type: "maq",
+        question: "Which of the following are recognized traits within the Big Five Personality Model? (Select all that apply)",
+        options: [
+          "Openness to Experience",
+          "Conscientiousness",
+          "Extraversion",
+          "Agreeableness",
+          "Emotional Stability (Neuroticism)"
+        ],
+        answer: [0, 1, 2, 3, 4],
+        rationale: "The Big Five traits are Openness, Conscientiousness, Extraversion, Agreeableness, and Emotional Stability."
+      },
+      {
+        id: 78,
+        lecture: 4,
+        type: "maq",
+        question: "Which of the following are steps in the systematic HR Recruitment Process? (Select all that apply)",
+        options: [
+          "Workforce Planning",
+          "Job Analysis (Job Description & Specification)",
+          "Sourcing and Screening Applications",
+          "Selection Methods (Testing & Interviews)",
+          "Onboarding and Induction"
+        ],
+        answer: [0, 1, 2, 3, 4],
+        rationale: "Planning, job analysis, sourcing, screening, interviewing, and onboarding comprise the HR recruitment lifecycle."
+      },
+      {
+        id: 79,
+        lecture: 4,
+        type: "maq",
+        question: "Which of the following are characteristics of High-Performing Agile Teams? (Select all that apply)",
+        options: [
+          "Clear shared goals and purpose",
+          "Well-defined roles and open communication",
+          "Mutual trust and accountability among members",
+          "Strict top-down micromanagement of daily code commits"
+        ],
+        answer: [0, 1, 2],
+        rationale: "Effective agile teams rely on shared purpose, clear roles, open communication, and trust."
+      },
+      {
+        id: 80,
+        lecture: 4,
+        type: "maq",
+        question: "Which factors contribute to a comprehensive Total Reward System in tech firms? (Select all that apply)",
+        options: [
+          "Competitive base pay and bonuses",
+          "Employee health and wellness initiatives",
+          "Structured learning and professional certification support",
+          "Recognition awards and career advancement paths"
+        ],
+        answer: [0, 1, 2, 3],
+        rationale: "Total reward combines base compensation, wellness benefits, learning development, and recognition."
+      },
+
+      // -------------------------------------------------------------
+      // LECTURE 5: ACCOUNTING (Q81-Q100)
+      // -------------------------------------------------------------
+      {
+        id: 81,
+        lecture: 5,
+        type: "mcq",
+        question: "What is the primary purpose of Financial Accounting?",
+        options: [
+          "To design marketing branding guidelines",
+          "To record, classify, summarize, and report financial transactions for decision-making",
+          "To write software requirements specifications",
+          "To manage employee conflict resolution"
+        ],
+        answer: [1],
+        rationale: "Financial accounting systematically records, summarizes, and reports financial transactions for stakeholders."
+      },
+      {
+        id: 82,
+        lecture: 5,
+        type: "mcq",
+        question: "Which financial statement presents a snapshot of what an enterprise owns, owes, and the owner's stake at a specific point in time?",
+        options: [
+          "Income Statement",
+          "Cash Flow Statement",
+          "Balance Sheet",
+          "Operating Budget"
+        ],
+        answer: [2],
+        rationale: "The Balance Sheet reports assets, liabilities, and owners' equity at a specific point in time."
+      },
+      {
+        id: 83,
+        lecture: 5,
+        type: "mcq",
+        question: "What is the Fundamental Accounting Equation that underpins every Balance Sheet?",
+        options: [
+          "Assets = Liabilities + Equity",
+          "Revenue = Expenses + Profit",
+          "Equity = Assets + Liabilities",
+          "Cash Flow = Operating - Financing"
+        ],
+        answer: [0],
+        rationale: "The foundational accounting equation is Assets = Liabilities + Equity."
+      },
+      {
+        id: 84,
+        lecture: 5,
+        type: "mcq",
+        question: "Resources owned by a business that are expected to be converted into cash within one trading year are classified as:",
+        options: [
+          "Fixed Assets",
+          "Current Assets",
+          "Long-Term Liabilities",
+          "Intangible Assets"
+        ],
+        answer: [1],
+        rationale: "Current assets are expected to be liquidated, converted to cash, or consumed within one operating year."
+      },
+      {
+        id: 85,
+        lecture: 5,
+        type: "mcq",
+        question: "Which of the following accounts is an example of an Intangible Asset?",
+        options: [
+          "Office furniture",
+          "Cash at bank",
+          "Software patent or registered trademark",
+          "Accounts payable"
+        ],
+        answer: [2],
+        rationale: "Patents, trademarks, brand equity, and software copyrights are non-physical, intangible assets."
+      },
+      {
+        id: 86,
+        lecture: 5,
+        type: "mcq",
+        question: "A debt obligation or commercial loan that must be paid back after more than one year is categorized as a:",
+        options: [
+          "Current Liability",
+          "Long-Term Liability",
+          "Current Asset",
+          "Revenue Expenditure"
+        ],
+        answer: [1],
+        rationale: "Financial debts due after more than 12 months are categorized as long-term liabilities."
+      },
+      {
+        id: 87,
+        lecture: 5,
+        type: "mcq",
+        question: "If a tech business has Total Assets of LKR 100,000 and Total Liabilities of LKR 30,000, what is the value of its Equity?",
+        options: [
+          "LKR 130,000",
+          "LKR 70,000",
+          "LKR 30,000",
+          "LKR 100,000"
+        ],
+        answer: [1],
+        rationale: "Equity = Assets - Liabilities = 100,000 - 30,000 = LKR 70,000."
+      },
+      {
+        id: 88,
+        lecture: 5,
+        type: "mcq",
+        question: "On an Income Statement, what formula calculates Gross Profit?",
+        options: [
+          "Gross Profit = Revenue - Cost of Sales",
+          "Gross Profit = Operating Profit - Tax",
+          "Gross Profit = Total Assets - Total Liabilities",
+          "Gross Profit = Revenue - Operating Expenses"
+        ],
+        answer: [0],
+        rationale: "Gross Profit = Total Revenue - Cost of Sales (Cost of Goods Sold)."
+      },
+      {
+        id: 89,
+        lecture: 5,
+        type: "mcq",
+        question: "A digital company reports Revenue of LKR 180 Billion, Cost of Sales of LKR 90 Billion, and Operating Expenses of LKR 50 Billion. What is its Operating Profit?",
+        options: [
+          "LKR 90 Billion",
+          "LKR 40 Billion",
+          "LKR 20 Billion",
+          "LKR 140 Billion"
+        ],
+        answer: [1],
+        rationale: "Gross Profit = 180 - 90 = 90B. Operating Profit = 90 - 50 = LKR 40 Billion."
+      },
+      {
+        id: 90,
+        lecture: 5,
+        type: "mcq",
+        question: "What is the primary difference between an Expense and a Capital Expenditure?",
+        options: [
+          "Expenses buy permanent land; expenditures pay utility bills",
+          "Expenses are day-to-day operational costs; capital expenditures invest in long-term assets",
+          "Expenses are recorded on the Balance Sheet; capital expenditures are not",
+          "Expenditures always result in a financial loss"
+        ],
+        answer: [1],
+        rationale: "Expenses fund day-to-day operations; capital expenditures fund long-term productive assets."
+      },
+      {
+        id: 91,
+        lecture: 5,
+        type: "mcq",
+        question: "Why is it possible for a company to report a net profit on its Income Statement yet face bankruptcy?",
+        options: [
+          "Because net profit ignores marketing costs",
+          "Because the company may suffer from negative cash flows and run out of available cash to pay immediate debts",
+          "Because assets always equal liabilities",
+          "Because gross profit is too high"
+        ],
+        answer: [1],
+        rationale: "Accounting profit does not guarantee immediate liquidity; negative cash flows can lead to insolvency."
+      },
+      {
+        id: 92,
+        lecture: 5,
+        type: "mcq",
+        question: "Under which section of the Cash Flow Statement is cash received from client software subscriptions recorded?",
+        options: [
+          "Cash Flows from Financing Activities",
+          "Cash Flows from Investing Activities",
+          "Cash Flows from Operating Activities",
+          "Cash Flows from Capital Restructuring"
+        ],
+        answer: [2],
+        rationale: "Revenue generated from core operational activities belongs to Cash Flows from Operating Activities."
+      },
+      {
+        id: 93,
+        lecture: 5,
+        type: "mcq",
+        question: "Purchasing enterprise servers, laboratory computers, and testing hardware is recorded under which cash flow category?",
+        options: [
+          "Operating Activities",
+          "Investing Activities",
+          "Financing Activities",
+          "Statutory Activities"
+        ],
+        answer: [1],
+        rationale: "Purchasing and selling long-term capital assets falls under Investing Activities."
+      },
+      {
+        id: 94,
+        lecture: 5,
+        type: "mcq",
+        question: "Which financial ratio evaluates an enterprise’s ability to meet its short-term debt obligations using short-term assets (Current Assets / Current Liabilities)?",
+        options: [
+          "Gearing Ratio",
+          "Current Ratio (Liquidity Ratio)",
+          "Net Profit Margin",
+          "Asset Turnover Ratio"
+        ],
+        answer: [1],
+        rationale: "The Current Ratio (Current Assets / Current Liabilities) evaluates short-term financial liquidity."
+      },
+      {
+        id: 95,
+        lecture: 5,
+        type: "mcq",
+        question: "A Gearing Ratio (such as Debt-to-Equity) evaluates which aspect of a business?",
+        options: [
+          "How quickly clients pay their invoices",
+          "The proportion of borrowed debt funding relative to owners' equity",
+          "The percentage of clicks converted into sales",
+          "The productivity of software engineers per hour"
+        ],
+        answer: [1],
+        rationale: "Gearing ratios evaluate long-term financial leverage and solvency risk by comparing debt to equity."
+      },
+      {
+        id: 96,
+        lecture: 5,
+        type: "mcq",
+        question: "If Dialog Axiata reports Total Revenue of LKR 180 Billion and a Gross Profit of LKR 90 Billion, what is its Gross Profit Margin?",
+        options: [
+          "25%",
+          "50%",
+          "75%",
+          "100%"
+        ],
+        answer: [1],
+        rationale: "Gross Profit Margin = (90 / 180) × 100% = 50%."
+      },
+      {
+        id: 97,
+        lecture: 5,
+        type: "maq",
+        question: "Which of the following are the three foundational Financial Statements prepared in financial accounting? (Select all that apply)",
+        options: [
+          "Balance Sheet (Statement of Financial Position)",
+          "Income Statement (Profit & Loss Statement)",
+          "Cash Flow Statement",
+          "Product Life Cycle Matrix"
+        ],
+        answer: [0, 1, 2],
+        rationale: "Balance Sheet, Income Statement, and Cash Flow Statement form the core financial reports."
+      },
+      {
+        id: 98,
+        lecture: 5,
+        type: "maq",
+        question: "Which of the following accounts are classified as Current Liabilities on a Balance Sheet? (Select all that apply)",
+        options: [
+          "Accounts payable (unpaid supplier invoices due within 30 days)",
+          "Short-term bank overdrafts due within 1 year",
+          "Accrued employee monthly salary expenses",
+          "20-year commercial property mortgage"
+        ],
+        answer: [0, 1, 2],
+        rationale: "Accounts payable, short-term overdrafts, and accrued wages are due within 12 months (Current Liabilities)."
+      },
+      {
+        id: 99,
+        lecture: 5,
+        type: "maq",
+        question: "Which of the following are categorized as Cash Inflows under Financing Activities on a Cash Flow Statement? (Select all that apply)",
+        options: [
+          "Cash received from commercial bank loans",
+          "Cash received from new equity investors and shareholders",
+          "Cash collected from daily product sales to customers",
+          "Cash received from selling old office equipment"
+        ],
+        answer: [0, 1],
+        rationale: "Bank borrowing and equity investments represent financing inflows; product sales are operating and equipment sales are investing."
+      },
+      {
+        id: 100,
+        lecture: 5,
+        type: "maq",
+        question: "Which of the following are common categories of Financial Ratios used to assess business health? (Select all that apply)",
+        options: [
+          "Profitability Ratios",
+          "Liquidity Ratios",
+          "Efficiency / Activity Ratios",
+          "Gearing / Solvency Ratios"
+        ],
+        answer: [0, 1, 2, 3],
+        rationale: "Profitability, liquidity, efficiency, and gearing constitute the four major financial ratio categories."
+      },
+
+      // -------------------------------------------------------------
+      // LECTURE 7: LEGAL & ETHICAL ISSUES (Q101-Q120)
+      // -------------------------------------------------------------
+      {
+        id: 101,
+        lecture: 7,
+        type: "mcq",
+        question: "Which form of Intellectual Property (IP) legally protects novel hardware inventions and unique industrial processes?",
+        options: [
+          "Copyright",
+          "Patent",
+          "Trademark",
+          "Trade Secret"
+        ],
+        answer: [1],
+        rationale: "Patents protect novel inventions, technological processes, and functional hardware systems."
+      },
+      {
+        id: 102,
+        lecture: 7,
+        type: "mcq",
+        question: "Which legal protection applies automatically to original software source code and technical architecture manuals?",
+        options: [
+          "Patent",
+          "Copyright",
+          "Trademark",
+          "Gearing Certificate"
+        ],
+        answer: [1],
+        rationale: "Copyright automatically protects original authorial works, including software code and technical documentation."
+      },
+      {
+        id: 103,
+        lecture: 7,
+        type: "mcq",
+        question: "Brand names, distinctive logos, and symbols that distinguish a company's technical products from rivals are protected by:",
+        options: [
+          "Copyrights",
+          "Patents",
+          "Trademarks",
+          "Trade Secrets"
+        ],
+        answer: [2],
+        rationale: "Trademarks protect commercial brand names, symbols, and logos against unauthorized imitation."
+      },
+      {
+        id: 104,
+        lecture: 7,
+        type: "mcq",
+        question: "Software that is commercially owned, requires paid authorization, and prohibits unauthorized reverse-engineering or modification is:",
+        options: [
+          "Open-Source Software",
+          "Proprietary Software",
+          "Freeware",
+          "Public Domain Software"
+        ],
+        answer: [1],
+        rationale: "Proprietary software is closed-source, commercially owned, and restricts copying, sharing, and modification."
+      },
+      {
+        id: 105,
+        lecture: 7,
+        type: "mcq",
+        question: "Which type of software license provides full access to source code, allowing modification and redistribution subject to specific license rules (e.g., GPL, MIT, Apache)?",
+        options: [
+          "Proprietary License",
+          "Open-Source License",
+          "Commercial Shareware",
+          "Restrictive EULA"
+        ],
+        answer: [1],
+        rationale: "Open-source licenses make source code available, permitting modification under specific compliance terms."
+      },
+      {
+        id: 106,
+        lecture: 7,
+        type: "mcq",
+        question: "Software that is distributed free of charge for basic use but does not necessarily provide public access to its underlying source code is:",
+        options: [
+          "Freeware",
+          "Proprietary Shareware",
+          "Open-Source",
+          "GPL Software"
+        ],
+        answer: [0],
+        rationale: "Freeware is free to use, but its underlying source code remains closed and proprietary."
+      },
+      {
+        id: 107,
+        lecture: 7,
+        type: "mcq",
+        question: "Trial software that requires payment after a specified evaluation period to unlock full features is known as:",
+        options: [
+          "Shareware",
+          "Freeware",
+          "Open-Source",
+          "Copyleft"
+        ],
+        answer: [0],
+        rationale: "Shareware provides trial functionality for an evaluation window before requiring paid licensing."
+      },
+      {
+        id: 108,
+        lecture: 7,
+        type: "mcq",
+        question: "Under the Electronic Transactions Act No. 19 of 2006 in Sri Lanka, what is the legal standing of electronic contracts and e-signatures?",
+        options: [
+          "They are completely illegal and void",
+          "They have legal validity and formal recognition under applicable law",
+          "They only apply to foreign multinational entities",
+          "They require paper notarization before becoming enforceable"
+        ],
+        answer: [1],
+        rationale: "The Electronic Transactions Act No. 19 of 2006 formally recognizes e-contracts and e-signatures as legally binding."
+      },
+      {
+        id: 109,
+        lecture: 7,
+        type: "mcq",
+        question: "Which regulatory framework mandates strict security standards for organizations that handle credit card and electronic payment transactions?",
+        options: [
+          "HIPAA",
+          "PCI-DSS",
+          "TRCSL",
+          "IEEE 802.11"
+        ],
+        answer: [1],
+        rationale: "PCI-DSS enforces information security controls for payment card handling and electronic transactions."
+      },
+      {
+        id: 110,
+        lecture: 7,
+        type: "mcq",
+        question: "Which international regulation governs data privacy, consent, and user data rights within the European Union?",
+        options: [
+          "GDPR (General Data Protection Regulation)",
+          "HIPAA",
+          "TRCSL",
+          "Computer Crime Act"
+        ],
+        answer: [0],
+        rationale: "GDPR enforces comprehensive data protection, user consent, and privacy rules across the European Union."
+      },
+      {
+        id: 111,
+        lecture: 7,
+        type: "mcq",
+        question: "Which Sri Lankan statutory act provides the legal framework to investigate and prosecute cybercrimes, unauthorized system intrusions, and data sabotage?",
+        options: [
+          "Electronic Transactions Act No. 19 of 2006",
+          "Computer Crime Act No. 24 of 2007",
+          "Intellectual Property Act",
+          "Telecommunications Regulatory Act"
+        ],
+        answer: [1],
+        rationale: "The Computer Crime Act No. 24 of 2007 provides the legal framework to prosecute unauthorized access and cybercrimes."
+      },
+      {
+        id: 112,
+        lecture: 7,
+        type: "mcq",
+        question: "What ethical and legal issue was central to the Cambridge Analytica / Facebook controversy?",
+        options: [
+          "Software copyright infringement",
+          "Unauthorized harvesting of personal data and lack of informed user consent",
+          "Commercial patent expiration",
+          "Use of unlicensed freeware tools"
+        ],
+        answer: [1],
+        rationale: "The Cambridge Analytica incident centered on unauthorized data harvesting and lack of informed user consent."
+      },
+      {
+        id: 113,
+        lecture: 7,
+        type: "mcq",
+        question: "Amazon discontinued an internal AI recruitment screening tool because it learned from historical resumes and exhibited bias against:",
+        options: [
+          "Junior programmers",
+          "International applicants",
+          "Female applicants",
+          "Cloud architects"
+        ],
+        answer: [2],
+        rationale: "Amazon's recruitment AI reflected historical hiring biases and penalized resumes containing female terms."
+      },
+      {
+        id: 114,
+        lecture: 7,
+        type: "mcq",
+        question: "The $100,000 legal settlement imposed on Pratibha Syntex Ltd. was a direct consequence of:",
+        options: [
+          "Data scraping via unauthorized APIs",
+          "Using unlicensed/pirated commercial software from Microsoft and Adobe",
+          "Refusing to adopt open-source databases",
+          "Failing to report an employee breach"
+        ],
+        answer: [1],
+        rationale: "Pratibha Syntex was penalized $100,000 for using pirated Microsoft and Adobe software in business operations."
+      },
+      {
+        id: 115,
+        lecture: 7,
+        type: "mcq",
+        question: "Under the CSSL Code of Ethics, which core value requires IT professionals to maintain high professional standards, behave with dignity, and protect the reputation of the ICT sector?",
+        options: [
+          "Professionalism",
+          "Adding Value to Sri Lanka",
+          "Continuous Speculation",
+          "Commercial Gearing"
+        ],
+        answer: [0],
+        rationale: "The CSSL value of Professionalism requires maintaining dignity and upholding the reputation of the ICT sector."
+      },
+      {
+        id: 116,
+        lecture: 7,
+        type: "mcq",
+        question: "What security mechanism restricts digital asset access based strictly on an employee's verified job responsibilities?",
+        options: [
+          "Open Access Policy",
+          "Role-Based Access Control (RBAC)",
+          "Public Key Deprecation",
+          "Algorithmic Licensing"
+        ],
+        answer: [1],
+        rationale: "Role-Based Access Control (RBAC) grants system permissions based on assigned job roles and duties."
+      },
+      {
+        id: 117,
+        lecture: 7,
+        type: "maq",
+        question: "Which of the following are recognized forms of Harmful Actions in IT ethics? (Select all that apply)",
+        options: [
+          "Intentionally distributing malware, spyware, and viruses",
+          "Damaging or deleting production databases without authorization",
+          "Deploying regular security patches and vulnerability updates",
+          "Disrupting systems and causing denial-of-service to legitimate users"
+        ],
+        answer: [0, 1, 3],
+        rationale: "Distributing malware, destroying data, and disrupting services are harmful actions; patching is a best practice."
+      },
+      {
+        id: 118,
+        lecture: 7,
+        type: "maq",
+        question: "Which of the following constitute core pillars of the Computer Society of Sri Lanka (CSSL) Code of Ethics? (Select all that apply)",
+        options: [
+          "Professionalism and Honesty",
+          "Competence and Professional Development",
+          "Adding Value to Sri Lanka",
+          "Responsibility and Integrity",
+          "Maximizing Short-Term Commercial Revenue at All Costs"
+        ],
+        answer: [0, 1, 2, 3],
+        rationale: "CSSL's six core values are Professionalism, Honesty, Competence, Professional Development, Adding Value to Sri Lanka, and Responsibility/Integrity."
+      },
+      {
+        id: 119,
+        lecture: 7,
+        type: "maq",
+        question: "Which of the following are essential Best Practices for IT Professionals to maintain security and compliance? (Select all that apply)",
+        options: [
+          "Implementing Multi-Factor Authentication (MFA) and strong passwords",
+          "Maintaining regular data backups and testing disaster recovery",
+          "Respecting user privacy and maintaining data integrity",
+          "Sharing access credentials across public repositories for convenience",
+          "Maintaining proper system documentation and software updates"
+        ],
+        answer: [0, 1, 2, 4],
+        rationale: "MFA, backups, privacy adherence, and documentation are core IT best practices."
+      },
+      {
+        id: 120,
+        lecture: 7,
+        type: "maq",
+        question: "Which of the following assets can be protected as Trade Secrets in tech businesses? (Select all that apply)",
+        options: [
+          "Proprietary source code algorithms",
+          "Confidential product roadmaps and strategic plans",
+          "Proprietary customer datasets and behavioral models",
+          "Public domain documentation published on open wikis"
+        ],
+        answer: [0, 1, 2],
+        rationale: "Proprietary source code, unreleased roadmaps, and confidential analytics can be protected as trade secrets."
+      }
+    ];
+
+    let userAnswers = {};
+    let correctCount = 0;
+    let answeredCount = 0;
+
+    function renderQuestions(filter = 'all') {
+      const wrapper = document.getElementById('questions-wrapper');
+      wrapper.innerHTML = '';
+
+      questionsData.forEach(q => {
+        if (filter !== 'all' && q.lecture !== parseInt(filter)) return;
+
+        const isMaq = q.type === 'maq';
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        card.id = `q-card-${q.id}`;
+
+        let optionsHtml = '';
+        q.options.forEach((opt, idx) => {
+          const inputType = isMaq ? 'checkbox' : 'radio';
+          optionsHtml += `
+            <label class="option-item" id="opt-label-${q.id}-${idx}">
+              <input type="${inputType}" name="q-${q.id}" value="${idx}" onchange="handleOptionChange(${q.id})">
+              <span>${opt}</span>
+            </label>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="q-header">
+            <span class="q-badge ${isMaq ? 'badge-maq' : 'badge-mcq'}">${isMaq ? 'Multiple-Answer (MAQ)' : 'Single-Choice (MCQ)'}</span>
+            <span class="q-num">Q${q.id} (Lecture ${q.lecture})</span>
+          </div>
+          <div class="q-text">${q.question}</div>
+          <div class="options-list">
+            ${optionsHtml}
+          </div>
+          <div class="card-actions">
+            <button class="btn btn-primary" onclick="checkAnswer(${q.id})">Submit Answer</button>
+            <button class="btn btn-secondary" onclick="resetQuestion(${q.id})">Reset</button>
+          </div>
+          <div class="feedback-box" id="feedback-${q.id}"></div>
+        `;
+
+        wrapper.appendChild(card);
+      });
+    }
+
+    function handleOptionChange(qId) {
+      const q = questionsData.find(item => item.id === qId);
+      if (q.type === 'mcq') {
+        checkAnswer(qId);
+      }
+    }
+
+    function checkAnswer(qId) {
+      const q = questionsData.find(item => item.id === qId);
+      const inputs = document.querySelectorAll(`input[name="q-${qId}"]:checked`);
+      const selected = Array.from(inputs).map(i => parseInt(i.value));
+
+      if (selected.length === 0) return;
+
+      const feedbackBox = document.getElementById(`feedback-${qId}`);
+      const isCorrect = arraysEqual(selected.sort(), q.answer.sort());
+
+      // Highlight options
+      q.options.forEach((_, idx) => {
+        const label = document.getElementById(`opt-label-${qId}-${idx}`);
+        label.classList.remove('correct', 'wrong');
+
+        if (q.answer.includes(idx)) {
+          label.classList.add('correct');
+        } else if (selected.includes(idx)) {
+          label.classList.add('wrong');
+        }
+      });
+
+      // Show feedback
+      feedbackBox.style.display = 'block';
+      if (isCorrect) {
+        feedbackBox.className = 'feedback-box feedback-correct';
+        feedbackBox.innerHTML = `<strong>Correct!</strong><div class="rationale">${q.rationale}</div>`;
+      } else {
+        feedbackBox.className = 'feedback-box feedback-wrong';
+        feedbackBox.innerHTML = `<strong>Incorrect.</strong><div class="rationale">${q.rationale}</div>`;
+      }
+
+      // Track score
+      if (!userAnswers[qId]) {
+        answeredCount++;
+        if (isCorrect) correctCount++;
+        userAnswers[qId] = isCorrect;
+      } else {
+        if (userAnswers[qId] !== isCorrect) {
+          if (isCorrect) correctCount++;
+          else correctCount--;
+          userAnswers[qId] = isCorrect;
+        }
+      }
+
+      updateStats();
+    }
+
+    function resetQuestion(qId) {
+      const inputs = document.querySelectorAll(`input[name="q-${qId}"]`);
+      inputs.forEach(i => i.checked = false);
+
+      const q = questionsData.find(item => item.id === qId);
+      q.options.forEach((_, idx) => {
+        const label = document.getElementById(`opt-label-${qId}-${idx}`);
+        label.classList.remove('correct', 'wrong');
+      });
+
+      const feedbackBox = document.getElementById(`feedback-${qId}`);
+      feedbackBox.style.display = 'none';
+
+      if (userAnswers[qId] !== undefined) {
+        if (userAnswers[qId]) correctCount--;
+        answeredCount--;
+        delete userAnswers[qId];
+        updateStats();
+      }
+    }
+
+    function updateStats() {
+      document.getElementById('answered-count').textContent = answeredCount;
+      document.getElementById('correct-count').textContent = correctCount;
+      const pct = answeredCount === 0 ? 0 : Math.round((correctCount / answeredCount) * 100);
+      document.getElementById('score-percentage').textContent = pct + '%';
+    }
+
+    function arraysEqual(a, b) {
+      if (a.length !== b.length) return false;
+      for (let i = 0; i < a.length; i++) {
+        if (a[i] !== b[i]) return false;
+      }
+      return true;
+    }
+
+    function filterLecture(lec, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderQuestions(lec);
+    }
+
+    // Initial render
+    renderQuestions('all');
+  </script>
+</body>
+</html>

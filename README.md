@@ -4,6 +4,8 @@ Interactive practice quiz for IT3120 Modern Enterprise Management.
 
 **Live quiz:** https://sahansbandara.github.io/it3120-mem-midterm-quiz/
 
+**Exam prep version:** https://sahansbandara.github.io/it3120-mem-midterm-quiz/Quiz.html
+
 ## Features
 
 - 120-question bank across Lectures 01, 02, 03, 04, 05, and 07
