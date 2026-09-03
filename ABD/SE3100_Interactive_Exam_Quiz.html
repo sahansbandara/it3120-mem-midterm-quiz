@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SE3100 Interactive Exam Quiz</title>
+<link rel="canonical" href="https://sahansbandara.github.io/Y03S01-Quiz-and-Paper/ABD/SE3100_Interactive_Exam_Quiz.html">
+<style>
+:root{
+  --navy:#0f2d52;
+  --navy2:#173f70;
+  --blue:#1976d2;
+  --cyan:#08a9c6;
+  --bg:#eef3f7;
+  --card:#ffffff;
+  --line:#d9e2ea;
+  --text:#1e293b;
+  --muted:#64748b;
+  --green:#14834a;
+  --greenbg:#eaf8ef;
+  --red:#c0392b;
+  --redbg:#fff0ee;
+  --orange:#e58a00;
+  --orangebg:#fff7df;
+  --shadow:0 8px 26px rgba(15,45,82,.08);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+
+/* Header */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:linear-gradient(90deg,var(--navy),var(--navy2));
+  color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.16)
+}
+.topbar-inner{max-width:1500px;margin:auto;display:flex;align-items:center;gap:16px;padding:12px 20px}
+.brand{min-width:260px}
+.brand .code{font-size:1.05rem;font-weight:800;letter-spacing:.02em}
+.brand .name{font-size:.84rem;opacity:.84;margin-top:2px}
+.top-stats{margin-left:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.badge{padding:6px 9px;border:1px solid rgba(255,255,255,.25);border-radius:999px;font-size:.77rem;background:rgba(255,255,255,.08)}
+.timer-display{font-variant-numeric:tabular-nums;font-weight:800;min-width:78px;text-align:center}
+.timer-display.danger{background:#7b1f1f;border-color:#ffb4ad}
+
+/* Setup */
+.setup-wrap{max-width:1050px;margin:34px auto;padding:0 18px}
+.setup-card{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:28px}
+.setup-card h1{font-size:1.55rem;color:var(--navy);margin:0 0 8px}
+.setup-card p{color:var(--muted);margin:0 0 22px}
+.setup-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.field label{display:block;font-weight:700;margin-bottom:7px}
+.field select,.field input[type="number"]{width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:11px 12px;background:#fff}
+.timer-panel{border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px}
+.switch{position:relative;width:48px;height:26px;display:inline-block;flex:none}
+.switch input{display:none}
+.slider{position:absolute;inset:0;background:#cbd5e1;border-radius:999px;transition:.2s}
+.slider:before{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.switch input:checked + .slider{background:var(--blue)}
+.switch input:checked + .slider:before{transform:translateX(22px)}
+.timer-config{display:flex;align-items:center;gap:8px}
+.start-btn{margin-top:22px;background:var(--cyan);color:#fff;border:0;border-radius:10px;padding:12px 22px;font-weight:800;box-shadow:0 4px 14px rgba(8,169,198,.24)}
+.start-btn:hover{filter:brightness(.96)}
+
+/* Main layout */
+.app-shell{max-width:1500px;margin:0 auto;display:grid;grid-template-columns:280px minmax(0,1fr);gap:20px;padding:20px}
+.sidebar{position:sticky;top:78px;align-self:start;max-height:calc(100vh - 98px);overflow:auto;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+.side-head{padding:16px;border-bottom:1px solid var(--line)}
+.side-head h2{font-size:1rem;color:var(--navy);margin:0 0 4px}
+.side-head p{font-size:.78rem;color:var(--muted);margin:0}
+.nav-section{padding:14px 14px 4px}
+.nav-title{font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin-bottom:10px}
+.question-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.qnav{
+  height:38px;border:1.5px solid #b8c4d1;background:#fff;color:var(--navy);
+  border-radius:7px;font-size:.8rem;font-weight:750;position:relative
+}
+.qnav.answered{background:var(--navy2);color:#fff;border-color:var(--navy2)}
+.qnav.flagged{box-shadow:0 0 0 2px var(--orange) inset}
+.qnav.flagged:after{content:"";position:absolute;right:3px;top:3px;width:6px;height:6px;border-radius:50%;background:var(--orange)}
+.legend{padding:12px 14px 16px;display:grid;gap:7px;font-size:.75rem;color:var(--muted)}
+.legend span{display:flex;gap:8px;align-items:center}
+.legend-box{width:18px;height:18px;border:1.5px solid #b8c4d1;border-radius:4px;background:#fff}
+.legend-box.filled{background:var(--navy2);border-color:var(--navy2)}
+.legend-box.flag{box-shadow:0 0 0 2px var(--orange) inset}
+.flagged-list{padding:0 14px 16px}
+.flagged-list button{background:var(--orangebg);color:#8b5700;border:1px solid #f2cc76;border-radius:7px;padding:6px 8px;margin:3px;font-size:.75rem}
+.flagged-empty{font-size:.76rem;color:var(--muted);padding-bottom:8px}
+
+.content{min-width:0}
+.progress-card{position:sticky;top:72px;z-index:35;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:13px;padding:12px 16px;margin-bottom:16px}
+.progress-row{display:flex;gap:18px;align-items:center;flex-wrap:wrap;font-size:.83rem}
+.progress-row strong{color:var(--navy)}
+.progress-track{height:7px;border-radius:999px;background:#e6edf3;margin-top:9px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:var(--cyan);transition:width .25s}
+
+.paper-title{background:#fff;border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin-bottom:16px}
+.paper-title h1{font-size:1.18rem;color:var(--navy);margin:0 0 4px}
+.paper-title p{margin:0;color:var(--muted);font-size:.85rem}
+
+.question-card{background:#fff;border:1px solid var(--line);border-radius:13px;box-shadow:0 2px 10px rgba(15,45,82,.045);margin-bottom:18px;overflow:hidden;scroll-margin-top:145px}
+.qcard-head{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid #edf1f5;background:#fbfdff}
+.q-num{font-weight:850;color:var(--navy)}
+.lecture-pill{font-size:.73rem;font-weight:700;background:#edf5ff;color:#25578b;border:1px solid #cfe1f5;border-radius:999px;padding:5px 8px}
+.type-pill{font-size:.7rem;color:#64748b;border:1px solid #dce4eb;border-radius:999px;padding:4px 7px}
+.head-actions{margin-left:auto;display:flex;align-items:center;gap:7px}
+.icon-btn{
+  width:38px;height:38px;border:1px solid #d5dee7;background:#fff;border-radius:50%;
+  display:grid;place-items:center;font-size:1.15rem;line-height:1
+}
+.icon-btn:hover{background:#f6f9fc}
+.icon-btn.hint-used{background:#fff8df;border-color:#edcd6a}
+.flag-btn.flag-active{background:var(--orangebg);border-color:#efbd53;color:#8a5600}
+.qbody{padding:18px}
+.qtext{font-weight:700;line-height:1.5;margin-bottom:14px}
+.multi-warning{font-size:.78rem;color:#a36200;background:var(--orangebg);border:1px solid #f0d38a;border-radius:8px;padding:8px 10px;margin-bottom:12px}
+.options{display:grid;gap:9px}
+.option{
+  display:flex;gap:10px;align-items:flex-start;border:1px solid #d8e0e8;border-radius:9px;padding:11px 12px;
+  background:#fff;transition:.15s;cursor:pointer
+}
+.option:hover{background:#f8fbfe;border-color:#b8cbdd}
+.option input{margin-top:3px;accent-color:var(--blue);transform:scale(1.08)}
+.option.correct{background:var(--greenbg);border-color:#7ac79a}
+.option.wrong{background:var(--redbg);border-color:#e39b94}
+.option.reveal-correct{background:#eef9f2;border:2px dashed #64b889}
+.option.locked{cursor:default}
+.answer-actions{display:flex;align-items:center;gap:10px;margin-top:13px;flex-wrap:wrap}
+.submit-answer{border:0;background:var(--navy2);color:#fff;border-radius:8px;padding:9px 14px;font-weight:750}
+.result-tag{font-size:.8rem;font-weight:800}
+.result-tag.good{color:var(--green)}
+.result-tag.bad{color:var(--red)}
+.result-tag.partial{color:#9a6700}
+.explain-btn{border:1px solid #cbd5e1;background:#fff;color:var(--navy2);border-radius:8px;padding:8px 11px;font-weight:700}
+.bottom-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:24px 0 50px}
+.bottom-actions button{border:0;border-radius:9px;padding:11px 16px;font-weight:800}
+.finish-btn{background:var(--cyan);color:#fff}
+.reset-btn{background:#fff;color:var(--navy);border:1px solid #cbd5e1!important}
+.new-btn{background:var(--navy2);color:#fff}
+
+/* Modals */
+.modal-backdrop{position:fixed;inset:0;background:rgba(10,24,43,.54);z-index:100;display:flex;align-items:center;justify-content:center;padding:18px}
+.modal{width:min(680px,100%);max-height:85vh;overflow:auto;background:#fff;border-radius:16px;box-shadow:0 24px 80px rgba(0,0,0,.28)}
+.modal-head{display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid var(--line)}
+.modal-head h3{margin:0;color:var(--navy);font-size:1.08rem}
+.modal-close{margin-left:auto;border:0;background:#eef2f6;width:34px;height:34px;border-radius:50%;font-size:1.05rem}
+.modal-body{padding:18px;line-height:1.55}
+.modal-body h4{font-size:.9rem;color:var(--navy);margin:16px 0 6px}
+.modal-body p{margin:6px 0}
+.modal-body .wrongbox{background:var(--redbg);border-left:4px solid var(--red);padding:10px 12px;border-radius:6px}
+.modal-body .correctbox{background:var(--greenbg);border-left:4px solid var(--green);padding:10px 12px;border-radius:6px}
+.modal-body .trapbox{background:#f7f1ff;border-left:4px solid #7d56b2;padding:10px 12px;border-radius:6px}
+.hint-modal .modal{width:min(460px,100%)}
+.hint-content{font-size:1rem;padding:26px 22px}
+.hint-symbol{font-size:2rem;text-align:center;margin-bottom:10px}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.result-stat{border:1px solid var(--line);border-radius:9px;padding:12px;text-align:center}
+.result-stat .v{font-size:1.3rem;font-weight:850;color:var(--navy)}
+.result-stat .k{font-size:.72rem;color:var(--muted);margin-top:3px}
+
+/* Mobile */
+.mobile-nav-toggle{display:none}
+@media(max-width:900px){
+  .topbar-inner{padding:10px 12px}.brand{min-width:0}.brand .name{display:none}
+  .setup-grid{grid-template-columns:1fr}
+  .app-shell{grid-template-columns:1fr;padding:12px}
+  .sidebar{position:fixed;left:12px;right:12px;top:68px;z-index:60;max-height:75vh;display:none}
+  .sidebar.mobile-open{display:block}
+  .mobile-nav-toggle{display:inline-flex;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.1);color:#fff;border-radius:7px;padding:6px 8px}
+  .progress-card{top:62px}
+  .lecture-pill{max-width:46vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .question-grid{grid-template-columns:repeat(10,1fr)}
+  .qnav{height:34px}
+}
+@media(max-width:560px){
+  .top-stats .badge.optional{display:none}
+  .setup-card{padding:20px 16px}
+  .question-grid{grid-template-columns:repeat(5,1fr)}
+  .qcard-head{padding:11px 12px;gap:6px;flex-wrap:wrap}
+  .head-actions{margin-left:auto}
+  .qbody{padding:15px 12px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <button id="mobileNavToggle" class="mobile-nav-toggle hidden" aria-label="Open question navigator">☰</button>
+    <div class="brand">
+      <div class="code">SE3100 — Architecture Based Development</div>
+      <div class="name">Interactive Midterm / Exam Practice Quiz</div>
+    </div>
+    <div class="top-stats">
+      <span class="badge optional" id="bankBadge">100-question bank</span>
+      <span class="badge optional" id="modeBadge">Ready</span>
+      <span class="badge timer-display hidden" id="timerDisplay">30:00</span>
+    </div>
+  </div>
+</header>
+
+<section id="setupScreen" class="setup-wrap">
+  <div class="setup-card">
+    <h1>Configure Practice Paper</h1>
+    <p>Choose a practice mode. Timer is optional and can remain off.</p>
+
+    <div class="setup-grid">
+      <div class="field">
+        <label for="modeSelect">Practice mode</label>
+        <select id="modeSelect">
+          <option value="mixed">Mixed Exam Paper</option>
+          <option value="lecture">Single Lecture Practice</option>
+          <option value="all">All Questions</option>
+        </select>
+      </div>
+
+      <div class="field" id="mixedCountField">
+        <label for="mixedCount">Mixed paper size</label>
+        <select id="mixedCount">
+          <option value="10">10 questions</option>
+          <option value="20">20 questions</option>
+          <option value="30" selected>30 questions</option>
+          <option value="40">40 questions</option>
+          <option value="50">50 questions</option>
+        </select>
+      </div>
+
+      <div class="field hidden" id="lectureField">
+        <label for="lectureSelect">Lecture</label>
+        <select id="lectureSelect"></select>
+      </div>
+
+      <div class="field">
+        <label>Optional timer</label>
+        <div class="timer-panel">
+          <label class="switch" aria-label="Enable timer">
+            <input id="timerToggle" type="checkbox">
+            <span class="slider"></span>
+          </label>
+          <div>
+            <div style="font-weight:750">Timer <span id="timerStateText">Off</span></div>
+            <div class="timer-config hidden" id="timerConfig">
+              <input id="timerMinutes" type="number" min="1" max="240" value="30" style="width:84px;padding:7px;border:1px solid #cbd5e1;border-radius:7px">
+              <span style="font-size:.8rem;color:#64748b">minutes</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button id="startBtn" class="start-btn">Start Practice</button>
+  </div>
+</section>
+
+<main id="quizScreen" class="hidden">
+  <div class="app-shell">
+    <aside id="sidebar" class="sidebar">
+      <div class="side-head">
+        <h2>Question Navigator</h2>
+        <p>Filled = answered. Outline = unanswered.</p>
+      </div>
+      <div class="nav-section">
+        <div class="nav-title">Questions</div>
+        <div id="questionGrid" class="question-grid"></div>
+      </div>
+      <div class="legend">
+        <span><i class="legend-box"></i> Unanswered</span>
+        <span><i class="legend-box filled"></i> Answered</span>
+        <span><i class="legend-box flag"></i> Flagged for later</span>
+      </div>
+      <div class="flagged-list">
+        <div class="nav-title">Flagged for later</div>
+        <div id="flaggedItems" class="flagged-empty">No flagged questions.</div>
+      </div>
+    </aside>
+
+    <section class="content">
+      <div class="progress-card">
+        <div class="progress-row">
+          <span>Answered: <strong id="answeredStat">0 / 0</strong></span>
+          <span>Score: <strong id="scoreStat">0.0%</strong></span>
+          <span>Hints Used: <strong id="hintStat">0</strong></span>
+          <span>Flagged: <strong id="flagStat">0</strong></span>
+        </div>
+        <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+      </div>
+
+      <div class="paper-title">
+        <h1 id="paperTitle">Practice Paper</h1>
+        <p id="paperSubtitle"></p>
+      </div>
+
+      <div id="questionsContainer"></div>
+
+      <div class="bottom-actions">
+        <button id="finishBtn" class="finish-btn">Finish Paper</button>
+        <button id="resetBtn" class="reset-btn">Reset Same Paper</button>
+        <button id="newPaperBtn" class="new-btn">Generate New Paper</button>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div id="modalRoot"></div>
+
+<script>
+const QUESTION_BANK = [{"id": "L01Q1", "lectureNo": "01", "lectureTitle": "Introduction to Software Architecture", "lectureLabel": "Lecture 01 - Introduction to Software Architecture", "originalNumber": 1, "type": "single", "question": "Does all software have an architecture?", "options": [{"key": "A", "text": "No — only systems designed by an architect"}, {"key": "B", "text": "No — only systems that documented their structure"}, {"key": "C", "text": "Yes — every system has structure, responsibilities, dependencies and rules"}, {"key": "D", "text": "Yes — but only after the first release"}, {"key": "E", "text": "Only if a recognised architectural style was chosen"}], "correct": ["C"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Any system has some form of structure, elements with responsibilities, relationships, dependencies, data flows, and rules whether explicit or implicit. The real question is whether the architecture has been **consciously understood and managed**.", "wrongExplanation": "A/B/E = confuse *having* an architecture with *deliberately choosing* one. D = architecture exists as soon as structure exists.", "trap": "\"No architecture\" is never the answer. Unplanned = **accidental** architecture."}, {"id": "L01Q2", "lectureNo": "01", "lectureTitle": "Introduction to Software Architecture", "lectureLabel": "Lecture 01 - Introduction to Software Architecture", "originalNumber": 2, "type": "single", "question": "Which is closest to an **architectural** decision rather than a design decision?", "options": [{"key": "A", "text": "Choosing a sorting algorithm"}, {"key": "B", "text": "Changing the data storage mechanism"}, {"key": "C", "text": "Designing a screen layout"}, {"key": "D", "text": "Naming a class"}, {"key": "E", "text": "Selecting a loop construct"}], "correct": ["B"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "A decision is more architectural when strategic, difficult/expensive to change, long-lasting, relevant to several parts, and associated with significant trade-offs. The lecture names **changing the data storage mechanism** as closer to architecture.", "wrongExplanation": "A, C, D, E = detailed classes, algorithms and screen layouts are explicitly closer to **design**.", "trap": "Treating architecture and design as fully separate. They exist on a **continuum**."}, {"id": "L01Q3", "lectureNo": "01", "lectureTitle": "Introduction to Software Architecture", "lectureLabel": "Lecture 01 - Introduction to Software Architecture", "originalNumber": 3, "type": "single", "question": "\"The company expects rapid growth\" should be translated by the architect into which prioritized Quality Attributes?", "options": [{"key": "A", "text": "Usability, Testability, Simplicity"}, {"key": "B", "text": "Scalability, Elasticity, Availability, Deployability"}, {"key": "C", "text": "Security, Auditability, Data integrity"}, {"key": "D", "text": "Modifiability, Interoperability"}, {"key": "E", "text": "Performance only"}], "correct": ["B"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Business drivers are expressed in business language; the architect must translate them into QAs. The lecture's exact example maps rapid growth to Scalability, Elasticity, Availability, Deployability.", "wrongExplanation": "A/C/D/E = plausible QAs but not the mapping given for growth.", "trap": "Answering with the QA you'd personally pick instead of the slide's stated mapping. (**W1 pattern.**)"}, {"id": "L01Q4", "lectureNo": "01", "lectureTitle": "Introduction to Software Architecture", "lectureLabel": "Lecture 01 - Introduction to Software Architecture", "originalNumber": 4, "type": "single", "question": "According to the lecture, architecture usually results in:", "options": [{"key": "A", "text": "The single best architecture for the system"}, {"key": "B", "text": "The least-worst architecture"}, {"key": "C", "text": "An architecture with no trade-offs"}, {"key": "D", "text": "A style-optimised architecture"}, {"key": "E", "text": "The cheapest architecture"}], "correct": ["B"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Everything in software architecture is a trade-off; there is no single best architecture for every system, and usually what we end up with is the **least-worst** architecture.", "wrongExplanation": "A/C = directly contradicted. D/E = never claimed.", "trap": "\"Best architecture\" phrasing appears in L1 **and** L4 (\"no universally best style\") — both are false."}, {"id": "L01Q5", "lectureNo": "01", "lectureTitle": "Introduction to Software Architecture", "lectureLabel": "Lecture 01 - Introduction to Software Architecture", "originalNumber": 5, "type": "single", "question": "In an **Agile** approach to intentional architecture:", "options": [{"key": "A", "text": "No architectural decisions are made"}, {"key": "B", "text": "Architecture emerges without direction"}, {"key": "C", "text": "Enough architecture is established to begin, then planning continues incrementally"}, {"key": "D", "text": "All components and interfaces are identified before implementation"}, {"key": "E", "text": "Refactoring is avoided to preserve the original structure"}], "correct": ["C"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Agile = establish enough architecture to begin and continue planning as the system develops; the architecture evolves through implementation and feedback, refactoring improves structure, and the team participates in decisions.", "wrongExplanation": "A/B = the lecture explicitly corrects this — architecturally significant decisions must still be made **deliberately**. D = plan-driven. E = refactoring is a stated Agile mechanism.", "trap": "B. \"Emergent\" ≠ \"directionless.\""}, {"id": "L01Q6", "lectureNo": "01", "lectureTitle": "Introduction to Software Architecture", "lectureLabel": "Lecture 01 - Introduction to Software Architecture", "originalNumber": 6, "type": "single", "question": "Which dimension covers rules such as **data ownership and communication mechanisms**?", "options": [{"key": "A", "text": "Quality Attributes"}, {"key": "B", "text": "Logical Components"}, {"key": "C", "text": "Architectural Style"}, {"key": "D", "text": "Architectural Decisions"}, {"key": "E", "text": "Business Drivers"}], "correct": ["D"], "hint": "Match the wording to the exact lecture definition.", "explanation": "Architectural Decisions establish the rules and constraints that guide construction — data ownership, communication mechanisms, access rules, security rules and regulations.", "wrongExplanation": "A = capabilities/success conditions. B = domains, services, workflows. C = layered, microservices, etc. E = not one of the four dimensions.", "trap": "E. Business drivers **feed** architecture but are not a dimension of it."}, {"id": "L01Q7", "lectureNo": "01", "lectureTitle": "Introduction to Software Architecture", "lectureLabel": "Lecture 01 - Introduction to Software Architecture", "originalNumber": 7, "type": "multi", "question": "Which are the **four dimensions** of software architecture? *(Select all)*", "options": [{"key": "A", "text": "Quality Attributes (Architectural Characteristics)"}, {"key": "B", "text": "Logical Components"}, {"key": "C", "text": "Architectural Style"}, {"key": "D", "text": "Architectural Decisions"}, {"key": "E", "text": "Business Drivers"}, {"key": "F", "text": "Stakeholder Concerns"}], "correct": ["A", "B", "C", "D"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "The four dimensions each answer a different question: what qualities matter, what parts exist, how they are arranged, what rules constrain implementation. All four apply across the **complete system**, not one module.", "wrongExplanation": "E/F = inputs/influences (business drivers, ABC), not dimensions.", "trap": "⚠ **Over-selection warning:** Adding E or F. Both appear later in the same lecture, which is exactly why they're tempting."}, {"id": "L01Q8", "lectureNo": "01", "lectureTitle": "Introduction to Software Architecture", "lectureLabel": "Lecture 01 - Introduction to Software Architecture", "originalNumber": 8, "type": "multi", "question": "When is a decision considered **more architectural**? *(Select all)*", "options": [{"key": "A", "text": "Strategic rather than tactical"}, {"key": "B", "text": "Difficult or expensive to change"}, {"key": "C", "text": "Long-lasting"}, {"key": "D", "text": "Relevant to several parts of the system"}, {"key": "E", "text": "Associated with significant trade-offs"}, {"key": "F", "text": "Made by a senior developer"}], "correct": ["A", "B", "C", "D", "E"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "All five are the stated criteria on the architecture-vs-design continuum.", "wrongExplanation": "F = **who** makes a decision does not determine whether it is architectural.", "trap": "⚠ **Over-selection warning:** Under-selecting. All five listed criteria are correct; only the \"who\" option is bait."}, {"id": "L01Q9", "lectureNo": "01", "lectureTitle": "Introduction to Software Architecture", "lectureLabel": "Lecture 01 - Introduction to Software Architecture", "originalNumber": 9, "type": "multi", "question": "Which describe **Accidental Architecture**? *(Select all)*", "options": [{"key": "A", "text": "Structure results from unrelated local decisions"}, {"key": "B", "text": "Dependencies grow without control"}, {"key": "C", "text": "Decisions may not be documented or understood"}, {"key": "D", "text": "Problems become visible only when the system is difficult to change"}, {"key": "E", "text": "The system has no architecture at all"}, {"key": "F", "text": "Frameworks are allowed to determine the system structure"}], "correct": ["A", "B", "C", "D", "F"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Accidental architecture emerges without sufficient architectural reasoning. Not planning does **not** produce a system without architecture — it produces an architecture that was **not deliberately selected**.", "wrongExplanation": "E = explicitly contradicted.", "trap": "⚠ **Over-selection warning:** E. The most-picked wrong option in the whole lecture."}, {"id": "L01Q10", "lectureNo": "01", "lectureTitle": "Introduction to Software Architecture", "lectureLabel": "Lecture 01 - Introduction to Software Architecture", "originalNumber": 10, "type": "multi", "question": "Which are correct **trade-off** examples from Lecture 01? *(Select all)*", "options": [{"key": "A", "text": "Greater security may reduce usability"}, {"key": "B", "text": "Greater consistency may reduce availability"}, {"key": "C", "text": "Greater flexibility may increase complexity"}, {"key": "D", "text": "Greater isolation may increase communication overhead"}, {"key": "E", "text": "Faster delivery may increase technical debt"}, {"key": "F", "text": "Greater modularity eliminates trade-offs"}], "correct": ["A", "B", "C", "D", "E"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "All five are stated. Conclusion: there is no single best architecture for every system; the result is usually the least-worst architecture.", "wrongExplanation": "F = contradicts \"everything in software architecture is a trade-off.\"", "trap": "⚠ **Over-selection warning:** F. Same \"everything improves\" fallacy as L2 Q9 — always wrong."}, {"id": "L01Q11", "lectureNo": "01", "lectureTitle": "Introduction to Software Architecture", "lectureLabel": "Lecture 01 - Introduction to Software Architecture", "originalNumber": 11, "type": "multi", "question": "Which are correct about **Plan-driven** intentional architecture? *(Select all)*", "options": [{"key": "A", "text": "Most major architectural planning is performed up front"}, {"key": "B", "text": "Requirements are studied early"}, {"key": "C", "text": "Major components and interfaces are identified early"}, {"key": "D", "text": "Significant changes may require the architecture to be revised"}, {"key": "E", "text": "It does not involve deliberate architectural decisions"}, {"key": "F", "text": "Waterfall is a given example"}], "correct": ["A", "B", "C", "D", "F"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Plan-driven treats architecture as an **early foundation** for development. Both plan-driven and Agile involve **deliberate** architectural decisions.", "wrongExplanation": "E = false for both approaches.", "trap": "⚠ **Over-selection warning:** Assuming \"intentional\" belongs only to plan-driven. Agile is also intentional."}, {"id": "L01Q12", "lectureNo": "01", "lectureTitle": "Introduction to Software Architecture", "lectureLabel": "Lecture 01 - Introduction to Software Architecture", "originalNumber": 12, "type": "multi", "question": "Which factors influence architecture in the **Architecture Business Cycle**? *(Select all)*", "options": [{"key": "A", "text": "Stakeholder concerns"}, {"key": "B", "text": "Developing organization"}, {"key": "C", "text": "Technical environment"}, {"key": "D", "text": "Architect's experience"}, {"key": "E", "text": "The resulting architecture influences those environments in return"}, {"key": "F", "text": "The programming language syntax"}], "correct": ["A", "B", "C", "D", "E"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "The ABC describes the relationship between architecture and its environment, and how architecture itself influences that environment in return — a **feedback** relationship.", "wrongExplanation": "F = never listed.", "trap": "⚠ **Over-selection warning:** Missing E. The **feedback direction** is the defining idea of the ABC, not just the list of influences."}, {"id": "L01Q13", "lectureNo": "01", "lectureTitle": "Introduction to Software Architecture", "lectureLabel": "Lecture 01 - Introduction to Software Architecture", "originalNumber": 13, "type": "multi", "question": "Which are **business drivers** as defined in the lecture? *(Select all)*", "options": [{"key": "A", "text": "Reducing time to market"}, {"key": "B", "text": "Improving user satisfaction"}, {"key": "C", "text": "Gaining a competitive advantage"}, {"key": "D", "text": "Meeting a fixed deadline"}, {"key": "E", "text": "Remaining within a limited budget"}, {"key": "F", "text": "Achieving 99.99% uptime"}], "correct": ["A", "B", "C", "D", "E"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Business drivers are business goals, pressures and constraints, normally expressed in **business language**. The architect translates them into Quality Attributes.", "wrongExplanation": "F = a **quality attribute response measure** (Availability), expressed in technical language — the *output* of the translation, not the driver.", "trap": "⚠ **Over-selection warning:** F. Test = \"is it in business language or technical language?\""}, {"id": "L01Q14", "lectureNo": "01", "lectureTitle": "Introduction to Software Architecture", "lectureLabel": "Lecture 01 - Introduction to Software Architecture", "originalNumber": 14, "type": "multi", "question": "In what order do the four dimensions connect to produce an architecture? *(Select all correct statements)*", "options": [{"key": "A", "text": "Understanding the problem domain comes first"}, {"key": "B", "text": "Quality Attributes are identified before logical components"}, {"key": "C", "text": "The architectural style is selected before quality attributes are known"}, {"key": "D", "text": "Architectural decisions are established after the style is selected"}, {"key": "E", "text": "A style alone does not represent the complete architecture"}], "correct": ["A", "B", "D", "E"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Sequence: understand problem domain → identify QAs → identify logical components → select style → establish decisions.", "wrongExplanation": "C = inverted; do not select a style before understanding domain and qualities (also matches L3's \"requirements before style\" and L4's \"not fashion\").", "trap": "⚠ **Over-selection warning:** C. This same principle is tested in **three separate lectures** — expect it in the exam."}, {"id": "L01Q15", "lectureNo": "01", "lectureTitle": "Introduction to Software Architecture", "lectureLabel": "Lecture 01 - Introduction to Software Architecture", "originalNumber": 15, "type": "multi", "question": "Which stakeholder-to-concern mappings from the ABC diagram are correct? *(Select all)*", "options": [{"key": "A", "text": "Maintenance organization → modifiability"}, {"key": "B", "text": "End user → behaviour, performance, security, reliability, usability"}, {"key": "C", "text": "Marketing → new features, short time to market, parity with competitors"}, {"key": "D", "text": "Developing organization management → low cost, keeping people employed"}, {"key": "E", "text": "Customer → maximum feature count regardless of cost"}], "correct": ["A", "B", "C", "D"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Customer concerns are **low cost, timely delivery, and not changing often** — the opposite of E.", "wrongExplanation": "E = contradicts the customer row.", "trap": "⚠ **Over-selection warning:** Confusing **customer** (buys it) with **end user** (uses it). They have different concerns in this diagram."}, {"id": "L01Q16", "lectureNo": "01", "lectureTitle": "Introduction to Software Architecture", "lectureLabel": "Lecture 01 - Introduction to Software Architecture", "originalNumber": 16, "type": "multi", "question": "Which items may form part of a software system beyond source code? (Select all that apply.)", "options": [{"key": "A", "text": "Data and databases"}, {"key": "B", "text": "Configurations, libraries and frameworks"}, {"key": "C", "text": "External services"}, {"key": "D", "text": "Interfaces to other systems"}, {"key": "E", "text": "Deployment and runtime environments"}, {"key": "F", "text": "Only executable source files"}], "correct": ["A", "B", "C", "D", "E"], "hint": "Recall the slide explaining that software is more than source code.", "explanation": "A software system may include data and databases, configurations, libraries and frameworks, external services, interfaces to other systems, and deployment/runtime environments.", "wrongExplanation": "F. The lecture explicitly states that software is more than source code and executable programs.", "trap": "⚠ **Over-selection warning:** Do not reduce a software system to code only."}, {"id": "L01Q17", "lectureNo": "01", "lectureTitle": "Introduction to Software Architecture", "lectureLabel": "Lecture 01 - Introduction to Software Architecture", "originalNumber": 17, "type": "multi", "question": "Which factors can make software systems more complex? (Select all that apply.)", "options": [{"key": "A", "text": "Increasing functionality"}, {"key": "B", "text": "More users and stakeholders"}, {"key": "C", "text": "More modules, components and services"}, {"key": "D", "text": "More relationships and dependencies"}, {"key": "E", "text": "Integration with external systems"}, {"key": "F", "text": "Changing requirements and technologies"}], "correct": ["A", "B", "C", "D", "E", "F"], "hint": "Think about growth in both the number of system elements and their interactions.", "explanation": "The lecture lists increasing functionality, more users and stakeholders, more modules/components/services, dependencies, external integrations, quality expectations, and changing requirements and technologies as causes of complexity.", "wrongExplanation": "All listed options are correct; there is no incorrect distractor in this item.", "trap": "⚠ **Over-selection warning:** All listed choices are lecture-supported causes."}, {"id": "L01Q18", "lectureNo": "01", "lectureTitle": "Introduction to Software Architecture", "lectureLabel": "Lecture 01 - Introduction to Software Architecture", "originalNumber": 18, "type": "multi", "question": "Which actions help manage software complexity? (Select all that apply.)", "options": [{"key": "A", "text": "Divide the system into meaningful parts"}, {"key": "B", "text": "Assign clear responsibilities"}, {"key": "C", "text": "Establish boundaries"}, {"key": "D", "text": "Control dependencies"}, {"key": "E", "text": "Define how parts communicate"}, {"key": "F", "text": "Allow unrestricted dependencies among all parts"}], "correct": ["A", "B", "C", "D", "E"], "hint": "Look for actions that impose structure and controlled interaction.", "explanation": "Complexity is managed by meaningful decomposition, clear responsibilities, boundaries, dependency control, defined communication, and consistent rules.", "wrongExplanation": "F. Unrestricted dependencies increase complexity rather than control it.", "trap": "⚠ **Over-selection warning:** More connectivity is not the goal; controlled dependencies are."}, {"id": "L01Q19", "lectureNo": "01", "lectureTitle": "Introduction to Software Architecture", "lectureLabel": "Lecture 01 - Introduction to Software Architecture", "originalNumber": 19, "type": "multi", "question": "Which statements describe Intentional Architecture? (Select all that apply.)", "options": [{"key": "A", "text": "Important Quality Attributes are identified"}, {"key": "B", "text": "Responsibilities are assigned clearly"}, {"key": "C", "text": "Dependencies are controlled"}, {"key": "D", "text": "An appropriate structural approach is selected"}, {"key": "E", "text": "Important decisions are communicated"}, {"key": "F", "text": "Every architectural decision must be made before implementation starts"}], "correct": ["A", "B", "C", "D", "E"], "hint": "Intentional means deliberate architectural reasoning, not deciding everything up front.", "explanation": "Intentional architecture results from deliberate decisions about Quality Attributes, responsibilities, dependencies, structure, communication, and review as the system changes.", "wrongExplanation": "F. The lecture states that intentional architecture does not mean every decision must be made at the beginning.", "trap": "⚠ **Over-selection warning:** Do not confuse intentional architecture with fully up-front architecture."}, {"id": "L01Q20", "lectureNo": "01", "lectureTitle": "Introduction to Software Architecture", "lectureLabel": "Lecture 01 - Introduction to Software Architecture", "originalNumber": 20, "type": "multi", "question": "Which factors can influence architectural decisions? (Select all that apply.)", "options": [{"key": "A", "text": "Business needs"}, {"key": "B", "text": "Available technologies"}, {"key": "C", "text": "Cost and time"}, {"key": "D", "text": "Development skills"}, {"key": "E", "text": "Operational environment and existing systems"}, {"key": "F", "text": "Organizational constraints"}], "correct": ["A", "B", "C", "D", "E", "F"], "hint": "Architecture is context-dependent; consider business, technical, people and organizational constraints.", "explanation": "The lecture lists business needs, technologies, cost, time, development skills, operational environment, existing systems and organizational constraints as architectural influences.", "wrongExplanation": "All listed options are correct; there is no incorrect distractor in this item.", "trap": "⚠ **Over-selection warning:** The same architecture is not automatically suitable for every system."}, {"id": "L02Q1", "lectureNo": "02", "lectureTitle": "Quality Attributes, Scenarios and Tactics", "lectureLabel": "Lecture 02 - Quality Attributes, Scenarios and Tactics", "originalNumber": 1, "type": "single", "question": "Which element of a QA scenario specifies the **measurable criterion** used to evaluate the response?", "options": [{"key": "A", "text": "Stimulus"}, {"key": "B", "text": "Environment"}, {"key": "C", "text": "Response"}, {"key": "D", "text": "Response measure"}, {"key": "E", "text": "Artifact"}], "correct": ["D"], "hint": "Identify the role of each scenario element before choosing.", "explanation": "Response = the activity the system undertakes; **Response measure** = the measurable criterion used to evaluate that response, making the requirement testable.", "wrongExplanation": "A = the triggering event/condition. B = the conditions in which it occurs. C = the activity itself, not its metric. E = the affected part of the system.", "trap": "Response vs Response measure. \"Displays results\" = Response; \"95% within 2 seconds\" = Response measure."}, {"id": "L02Q2", "lectureNo": "02", "lectureTitle": "Quality Attributes, Scenarios and Tactics", "lectureLabel": "Lecture 02 - Quality Attributes, Scenarios and Tactics", "originalNumber": 2, "type": "single", "question": "A tactic is best defined as:", "options": [{"key": "A", "text": "A reusable architectural style"}, {"key": "B", "text": "A design decision that influences the achievement of a QA response"}, {"key": "C", "text": "A measurable criterion for evaluating a response"}, {"key": "D", "text": "A contextualized solution to an architectural problem"}, {"key": "E", "text": "A stakeholder prioritisation technique"}], "correct": ["B"], "hint": "Focus on the defining characteristic, not a related concept.", "explanation": "Tactics are design techniques an architect uses to achieve required QA responses; a tactic **directly affects the system's response to some stimulus**. Flow: Stimulus → Tactics → Response.", "wrongExplanation": "A = style is the overall structure (L4). C = response measure. D = that's an architectural **pattern** (L4). E = the three-QA prioritisation technique.", "trap": "Tactic vs Pattern. Tactic = a design decision controlling a response; Pattern = a contextualized solution."}, {"id": "L02Q3", "lectureNo": "02", "lectureTitle": "Quality Attributes, Scenarios and Tactics", "lectureLabel": "Lecture 02 - Quality Attributes, Scenarios and Tactics", "originalNumber": 3, "type": "single", "question": "\"Caching may improve performance but complicate consistency\" illustrates:", "options": [{"key": "A", "text": "Architectural significance"}, {"key": "B", "text": "A quality attribute trade-off"}, {"key": "C", "text": "A response measure"}, {"key": "D", "text": "A prevent-faults tactic"}, {"key": "E", "text": "Functionality vs quality attributes"}], "correct": ["B"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "QAs cannot be considered in isolation; achieving one may positively or negatively affect others. Architecture therefore involves **trade-off analysis** rather than independent optimisation.", "wrongExplanation": "A = about needing structural decisions. C = a metric. D = availability tactic category. E = a different distinction (what vs how well).", "trap": "Answering \"performance\" — the question asks what the **statement illustrates**, not which QA appears in it. (W1 check.)"}, {"id": "L02Q4", "lectureNo": "02", "lectureTitle": "Quality Attributes, Scenarios and Tactics", "lectureLabel": "Lecture 02 - Quality Attributes, Scenarios and Tactics", "originalNumber": 4, "type": "single", "question": "In the general **Performance** scenario, which is a valid stimulus?", "options": [{"key": "A", "text": "A fault: omission, crash, incorrect timing"}, {"key": "B", "text": "Arrival of a periodic, sporadic, or stochastic event"}, {"key": "C", "text": "A developer wishing to change the UI"}, {"key": "D", "text": "An attempt to modify data"}, {"key": "E", "text": "Degraded operation"}], "correct": ["B"], "hint": "Identify the role of each scenario element before choosing.", "explanation": "Performance stimulus = arrival of a **periodic, sporadic, or stochastic** event. Response measure = latency, deadline, throughput, jitter, miss rate.", "wrongExplanation": "A = **Availability** stimulus (fault). C = Modifiability. D = Security. E = an environment value, not a stimulus.", "trap": "Mixing the general scenarios across QAs — this is the most-tested confusion in L2."}, {"id": "L02Q5", "lectureNo": "02", "lectureTitle": "Quality Attributes, Scenarios and Tactics", "lectureLabel": "Lecture 02 - Quality Attributes, Scenarios and Tactics", "originalNumber": 5, "type": "single", "question": "Richards and Ford recommend that stakeholders select how many highest-priority Quality Attributes as primary architectural drivers?", "options": [{"key": "A", "text": "One"}, {"key": "B", "text": "Two"}, {"key": "C", "text": "Three"}, {"key": "D", "text": "Five"}, {"key": "E", "text": "As many as the stakeholders wish"}], "correct": ["C"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Shortlist candidates → stakeholders select the **three** highest-priority QAs → use as the primary drivers for design and trade-off analysis. Keep the driving list as short as reasonably possible.", "wrongExplanation": "A/B/D = not the stated number. E = contradicts \"as short as reasonably possible.\"", "trap": "The slide adds that this is a **prioritisation technique, not a universal numerical rule** — so a question asking \"must there always be exactly three?\" answers **no**."}, {"id": "L02Q6", "lectureNo": "02", "lectureTitle": "Quality Attributes, Scenarios and Tactics", "lectureLabel": "Lecture 02 - Quality Attributes, Scenarios and Tactics", "originalNumber": 6, "type": "single", "question": "\"Increase Semantic Coherence\" belongs to which tactic category?", "options": [{"key": "A", "text": "Reduce Coupling"}, {"key": "B", "text": "Increase Cohesion"}, {"key": "C", "text": "Defer Binding"}, {"key": "D", "text": "Reduce Size of a Module"}, {"key": "E", "text": "Manage Resources"}], "correct": ["B"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Modifiability tactic categories: Reduce Size of a Module (Split Module), **Increase Cohesion (Increase Semantic Coherence)**, Reduce Coupling (Encapsulate…), Defer Binding.", "wrongExplanation": "A = Encapsulate etc. C = binding-time decisions. D = Split Module. E = a Performance category.", "trap": "\"Coherence\" sounds like coupling; it's **cohesion**."}, {"id": "L02Q7", "lectureNo": "02", "lectureTitle": "Quality Attributes, Scenarios and Tactics", "lectureLabel": "Lecture 02 - Quality Attributes, Scenarios and Tactics", "originalNumber": 7, "type": "multi", "question": "Which are the **six elements** of a Quality Attribute Scenario? *(Select all)*", "options": [{"key": "A", "text": "Source of stimulus"}, {"key": "B", "text": "Stimulus"}, {"key": "C", "text": "Environment"}, {"key": "D", "text": "Artifact"}, {"key": "E", "text": "Response"}, {"key": "F", "text": "Response measure"}, {"key": "G", "text": "Tactic"}], "correct": ["A", "B", "C", "D", "E", "F"], "hint": "Identify the role of each scenario element before choosing.", "explanation": "The six elements make a QA requirement operational and testable: source, stimulus, environment, artifact, response, response measure.", "wrongExplanation": "G = a tactic is a design decision used to achieve the response — not a scenario element.", "trap": "⚠ **Over-selection warning:** Adding \"Tactic\" or \"Quality Attribute\" as a seventh element. Exactly six."}, {"id": "L02Q8", "lectureNo": "02", "lectureTitle": "Quality Attributes, Scenarios and Tactics", "lectureLabel": "Lecture 02 - Quality Attributes, Scenarios and Tactics", "originalNumber": 8, "type": "multi", "question": "Which are the **three differentiating features** of an architectural characteristic? *(Select all)*", "options": [{"key": "A", "text": "Specifies a non-domain design consideration"}, {"key": "B", "text": "Influences a structural aspect of the design"}, {"key": "C", "text": "Is important to the success of the system"}, {"key": "D", "text": "Is always measurable in seconds"}, {"key": "E", "text": "Is documented in the requirements specification"}, {"key": "F", "text": "Must be selected by stakeholders"}], "correct": ["A", "B", "C"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "The triangle model: explicit (specifies a non-domain design consideration), implicit (influences some structural aspect of the design), and critical/important to the success of the system.", "wrongExplanation": "D = \"always in seconds\" is false; measures vary (%, throughput, hours). E/F = process concerns, not defining features.", "trap": "⚠ **Over-selection warning:** F. Stakeholder selection is the **prioritisation** step, not part of the definition."}, {"id": "L02Q9", "lectureNo": "02", "lectureTitle": "Quality Attributes, Scenarios and Tactics", "lectureLabel": "Lecture 02 - Quality Attributes, Scenarios and Tactics", "originalNumber": 9, "type": "multi", "question": "Which are correct trade-off examples from the lecture? *(Select all)*", "options": [{"key": "A", "text": "Redundancy may improve availability but increase cost and complexity"}, {"key": "B", "text": "Caching may improve performance but complicate consistency"}, {"key": "C", "text": "Additional abstraction may improve modifiability but introduce overhead"}, {"key": "D", "text": "Strong security controls may reduce usability"}, {"key": "E", "text": "Increasing modularity improves every quality attribute simultaneously"}], "correct": ["A", "B", "C", "D"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "All four are the lecture's stated examples. The conclusion is that architecture involves trade-off analysis rather than independent optimisation of each quality.", "wrongExplanation": "E = contradicts the entire trade-off principle.", "trap": "⚠ **Over-selection warning:** E is the \"everything improves\" fallacy — never correct in this module."}, {"id": "L02Q10", "lectureNo": "02", "lectureTitle": "Quality Attributes, Scenarios and Tactics", "lectureLabel": "Lecture 02 - Quality Attributes, Scenarios and Tactics", "originalNumber": 10, "type": "multi", "question": "Which questions help identify **architecturally significant** Quality Attributes? *(Select all)*", "options": [{"key": "A", "text": "Which qualities are essential for system success?"}, {"key": "B", "text": "Which failures would be unacceptable?"}, {"key": "C", "text": "Which qualities require early structural decisions?"}, {"key": "D", "text": "Which qualities would be difficult to add later?"}, {"key": "E", "text": "Which qualities are cheapest to implement?"}, {"key": "F", "text": "Which qualities the development team prefers?"}], "correct": ["A", "B", "C", "D"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "A QA is architecturally significant when supporting it requires important structural decisions. It is not practical to treat every desirable quality as equally important; supporting more QAs adds substantial complexity.", "wrongExplanation": "E/F = not on the slide; cost and team preference are not significance criteria.", "trap": "⚠ **Over-selection warning:** F echoes L4's \"not fashion\" principle — preference never decides architecture."}, {"id": "L02Q11", "lectureNo": "02", "lectureTitle": "Quality Attributes, Scenarios and Tactics", "lectureLabel": "Lecture 02 - Quality Attributes, Scenarios and Tactics", "originalNumber": 11, "type": "multi", "question": "Which are valid **response measures** in the general Performance scenario? *(Select all)*", "options": [{"key": "A", "text": "Latency"}, {"key": "B", "text": "Deadline"}, {"key": "C", "text": "Throughput"}, {"key": "D", "text": "Jitter"}, {"key": "E", "text": "Miss rate"}, {"key": "F", "text": "Availability percentage"}], "correct": ["A", "B", "C", "D", "E"], "hint": "Identify the role of each scenario element before choosing.", "explanation": "Performance measures = latency, deadline, throughput, jitter, miss rate. Availability measures = availability %, time in degraded mode, time to detect fault, repair time, proportion of faults handled.", "wrongExplanation": "F = an **Availability** measure.", "trap": "⚠ **Over-selection warning:** F. Every distractor in L2 scenario questions is a real measure — just from the wrong QA."}, {"id": "L02Q12", "lectureNo": "02", "lectureTitle": "Quality Attributes, Scenarios and Tactics", "lectureLabel": "Lecture 02 - Quality Attributes, Scenarios and Tactics", "originalNumber": 12, "type": "multi", "question": "Which are possible **stimuli or environments** in the general **Availability** scenario? *(Select all)*", "options": [{"key": "A", "text": "Fault: omission"}, {"key": "B", "text": "Fault: crash"}, {"key": "C", "text": "Fault: incorrect timing"}, {"key": "D", "text": "Environment: degraded operation"}, {"key": "E", "text": "Environment: startup"}, {"key": "F", "text": "Stimulus: arrival of a stochastic event"}], "correct": ["A", "B", "C", "D", "E"], "hint": "Identify the role of each scenario element before choosing.", "explanation": "Availability stimulus = fault (omission, crash, incorrect timing, incorrect response). Environment = normal operation, startup, shutdown, repair mode, degraded operation, overloaded operation.", "wrongExplanation": "F = **Performance** stimulus.", "trap": "⚠ **Over-selection warning:** F again — cross-QA contamination."}, {"id": "L02Q13", "lectureNo": "02", "lectureTitle": "Quality Attributes, Scenarios and Tactics", "lectureLabel": "Lecture 02 - Quality Attributes, Scenarios and Tactics", "originalNumber": 13, "type": "multi", "question": "Match the tactic **categories** correctly. *(Select all)*", "options": [{"key": "A", "text": "Availability → Detect Faults, Recover from Faults, Prevent Faults"}, {"key": "B", "text": "Performance → Control Resource Demand, Manage Resources"}, {"key": "C", "text": "Security → Detect, Resist, React to, Recover from Attacks"}, {"key": "D", "text": "Modifiability → Reduce Size of a Module, Increase Cohesion, Reduce Coupling, Defer Binding"}, {"key": "E", "text": "Usability → Detect Faults, Manage Resources"}], "correct": ["A", "B", "C", "D"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "These are the four tactic diagrams in the lecture (Pages 30–33). Availability has 3 categories, Performance 2, Security 4, Modifiability 4.", "wrongExplanation": "E = no usability tactic diagram is given; those categories belong to Availability and Performance.", "trap": "⚠ **Over-selection warning:** The **count** is examinable: 3-2-4-4."}, {"id": "L02Q14", "lectureNo": "02", "lectureTitle": "Quality Attributes, Scenarios and Tactics", "lectureLabel": "Lecture 02 - Quality Attributes, Scenarios and Tactics", "originalNumber": 14, "type": "multi", "question": "Which are **Detect Faults** (Availability) tactics? *(Select all)*", "options": [{"key": "A", "text": "Ping/Echo"}, {"key": "B", "text": "Heartbeat"}, {"key": "C", "text": "Monitor"}, {"key": "D", "text": "Voting"}, {"key": "E", "text": "Encapsulate"}, {"key": "F", "text": "Prioritize Events"}], "correct": ["A", "B", "C", "D"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Detect Faults: Ping/Echo, Monitor, Heartbeat, Timestamp, Sanity Checking, Condition Monitoring, Voting, Exception Detection, Self-Test.", "wrongExplanation": "E = Modifiability (Reduce Coupling). F = Performance (Control Resource Demand).", "trap": "⚠ **Over-selection warning:** Sanity Checking and Self-Test are also Detect Faults — don't reject them if they appear."}, {"id": "L02Q15", "lectureNo": "02", "lectureTitle": "Quality Attributes, Scenarios and Tactics", "lectureLabel": "Lecture 02 - Quality Attributes, Scenarios and Tactics", "originalNumber": 15, "type": "multi", "question": "\"Registered student requests the examination results page during the peak result-release period; the Results service retrieves and displays the results; 95% of requests complete within two seconds.\" Which mappings are correct? *(Select all)*", "options": [{"key": "A", "text": "Source of stimulus = Registered student"}, {"key": "B", "text": "Environment = Peak result-release period"}, {"key": "C", "text": "Artifact = Results service"}, {"key": "D", "text": "Response measure = 95% of requests within two seconds"}, {"key": "E", "text": "Stimulus = Results service"}, {"key": "F", "text": "Response = Peak-load operation"}], "correct": ["A", "B", "C", "D"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Concrete Performance scenario mapping: source = registered student, stimulus = requests the results page, environment = peak-load operation, artifact = results service, response = retrieves and displays results, measure = 95% within two seconds.", "wrongExplanation": "E = Results service is the **artifact**; stimulus is the request. F = peak-load is the **environment**.", "trap": "⚠ **Over-selection warning:** Swapped element labels. Read the element name, not the familiar words. (**W1 pattern.**)"}, {"id": "L02Q16", "lectureNo": "02", "lectureTitle": "Quality Attributes, Scenarios and Tactics", "lectureLabel": "Lecture 02 - Quality Attributes, Scenarios and Tactics", "originalNumber": 16, "type": "multi", "question": "Which statements about **functionality vs quality attributes** are correct? *(Select all)*", "options": [{"key": "A", "text": "Functionality describes what the system does"}, {"key": "B", "text": "Quality attributes describe how well the system does it"}, {"key": "C", "text": "The same functionality can be delivered by many different structures"}, {"key": "D", "text": "Quality attributes largely drive the choice of structure"}, {"key": "E", "text": "Delivering correct functionality is sufficient for a successful architecture"}, {"key": "F", "text": "Both functionality and quality attributes are necessary"}], "correct": ["A", "B", "C", "D", "F"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Functionality can be achieved through many different structures; the QAs are what make one structure preferable, so architectural design starts from QA concerns and produces architectural responses.", "wrongExplanation": "E = both are necessary; functionality alone is insufficient.", "trap": "⚠ **Over-selection warning:** E. The whole lecture exists to reject that claim."}, {"id": "L02Q17", "lectureNo": "02", "lectureTitle": "Quality Attributes, Scenarios and Tactics", "lectureLabel": "Lecture 02 - Quality Attributes, Scenarios and Tactics", "originalNumber": 17, "type": "multi", "question": "Which Quality Attribute → main concern mappings are correct? (Select all that apply.)", "options": [{"key": "A", "text": "Performance → how quickly the system responds"}, {"key": "B", "text": "Availability → whether the system is operational when required"}, {"key": "C", "text": "Security → protection against unauthorized access and modification"}, {"key": "D", "text": "Modifiability → ease of making changes"}, {"key": "E", "text": "Scalability → ability to support increasing demand"}, {"key": "F", "text": "Testability → ability to exchange information with other systems"}], "correct": ["A", "B", "C", "D", "E"], "hint": "Match each Quality Attribute to its direct concern from the lecture table.", "explanation": "Performance concerns response speed, Availability concerns operational readiness, Security concerns protection, Modifiability concerns ease of change, and Scalability concerns increasing demand.", "wrongExplanation": "F. Exchanging and using information with other systems is Interoperability, not Testability.", "trap": "⚠ **Over-selection warning:** Do not confuse Testability with Interoperability."}, {"id": "L02Q18", "lectureNo": "02", "lectureTitle": "Quality Attributes, Scenarios and Tactics", "lectureLabel": "Lecture 02 - Quality Attributes, Scenarios and Tactics", "originalNumber": 18, "type": "multi", "question": "Which architectural responses are paired correctly with their Quality Attributes? (Select all that apply.)", "options": [{"key": "A", "text": "Performance → caching and concurrency"}, {"key": "B", "text": "Availability → redundancy and recovery mechanisms"}, {"key": "C", "text": "Security → authentication and access control"}, {"key": "D", "text": "Modifiability → modularisation and dependency control"}, {"key": "E", "text": "Scalability → distribution and replication"}, {"key": "F", "text": "Interoperability → removing interfaces and protocols"}], "correct": ["A", "B", "C", "D", "E"], "hint": "Choose structural responses that actually help the named quality.", "explanation": "The lecture pairs Performance with caching/concurrency, Availability with redundancy/recovery, Security with authentication/access control, Modifiability with modularisation/dependency control, and Scalability with distribution/replication.", "wrongExplanation": "F. Interoperability depends on protocols, interfaces and data formats, not removing them.", "trap": "⚠ **Over-selection warning:** Watch for an option that reverses the purpose of interoperability."}, {"id": "L02Q19", "lectureNo": "02", "lectureTitle": "Quality Attributes, Scenarios and Tactics", "lectureLabel": "Lecture 02 - Quality Attributes, Scenarios and Tactics", "originalNumber": 19, "type": "multi", "question": "Which statements make a Quality Attribute requirement operational and testable? (Select all that apply.)", "options": [{"key": "A", "text": "State what event occurs"}, {"key": "B", "text": "State the conditions under which it occurs"}, {"key": "C", "text": "Identify the affected artifact"}, {"key": "D", "text": "Specify how the system should respond"}, {"key": "E", "text": "Define how success will be measured"}, {"key": "F", "text": "Use only a vague phrase such as 'the system must be fast'"}], "correct": ["A", "B", "C", "D", "E"], "hint": "A testable requirement must specify event, conditions, affected part, response and measurement.", "explanation": "A concrete Quality Attribute requirement identifies the event, environment, affected artifact, response and measurable success criterion.", "wrongExplanation": "F. 'The system must be fast' is explicitly presented as too vague to test.", "trap": "⚠ **Over-selection warning:** A Quality Attribute name by itself is not a complete scenario."}, {"id": "L02Q20", "lectureNo": "02", "lectureTitle": "Quality Attributes, Scenarios and Tactics", "lectureLabel": "Lecture 02 - Quality Attributes, Scenarios and Tactics", "originalNumber": 20, "type": "multi", "question": "Which statements about architectural tactics are correct? (Select all that apply.)", "options": [{"key": "A", "text": "A tactic is a design decision intended to influence a Quality Attribute response"}, {"key": "B", "text": "Tactics directly affect how the system responds to a stimulus"}, {"key": "C", "text": "Availability tactics include detecting, recovering from and preventing faults"}, {"key": "D", "text": "Performance tactics include controlling resource demand and managing resources"}, {"key": "E", "text": "Modifiability tactics include reducing coupling and increasing cohesion"}, {"key": "F", "text": "A tactic is the same thing as an architectural style"}], "correct": ["A", "B", "C", "D", "E"], "hint": "Think of tactics as targeted design moves, not the overall architecture shape.", "explanation": "Tactics are design decisions used to influence Quality Attribute responses. The lecture groups them under Availability, Performance, Security and Modifiability.", "wrongExplanation": "F. An architectural style describes the overall structure; a tactic is a focused design decision.", "trap": "⚠ **Over-selection warning:** Do not treat tactic, pattern and style as synonyms."}, {"id": "L03Q1", "lectureNo": "03", "lectureTitle": "Architectural Thinking", "lectureLabel": "Lecture 03 - Architectural Thinking", "originalNumber": 1, "type": "single", "question": "Which term describes the number of elements affected by a dependency?", "options": [{"key": "A", "text": "Strength"}, {"key": "B", "text": "Locality"}, {"key": "C", "text": "Degree"}, {"key": "D", "text": "Cohesion"}, {"key": "E", "text": "Afferent coupling"}], "correct": ["C"], "hint": "Match the wording to the exact lecture definition.", "explanation": "Connascence has 3 properties — Strength (ease of refactoring), Locality (closeness), Degree (how many elements affected).", "wrongExplanation": "A = ease of refactoring, not count. B = distance between elements. D = internal relatedness, not a connascence property. E = incoming connections.", "trap": "Strength ↔ Degree swap. Strength = *how hard*, Degree = *how many*."}, {"id": "L03Q2", "lectureNo": "03", "lectureTitle": "Architectural Thinking", "lectureLabel": "Lecture 03 - Architectural Thinking", "originalNumber": 2, "type": "single", "question": "An application cannot operate without its database. According to the lecture, the database:", "options": [{"key": "A", "text": "Is a separate architectural quantum"}, {"key": "B", "text": "Forms part of the same architectural quantum as the application"}, {"key": "C", "text": "Is excluded because it is infrastructure"}, {"key": "D", "text": "Creates static connascence of timing"}, {"key": "E", "text": "Makes the system automatically distributed"}], "correct": ["B"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "A quantum contains the components necessary to function independently; operational dependencies belong to the quantum. Two services sharing one DB are in the **same** quantum.", "wrongExplanation": "A = contradicts independent-operation rule. C = infrastructure needed to run is included. D = timing is *dynamic*, not static. E = distribution needs multiple deployment units + remote protocols.", "trap": "Thinking \"database is just storage, not architecture.\""}, {"id": "L03Q3", "lectureNo": "03", "lectureTitle": "Architectural Thinking", "lectureLabel": "Lecture 03 - Architectural Thinking", "originalNumber": 3, "type": "single", "question": "Which is the defining characteristic of a monolithic architecture?", "options": [{"key": "A", "text": "It contains no modules"}, {"key": "B", "text": "It uses only technical partitioning"}, {"key": "C", "text": "It is deployed as a single unit"}, {"key": "D", "text": "It has exactly one quality attribute"}, {"key": "E", "text": "It cannot use domain partitioning"}], "correct": ["C"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "A monolith may contain multiple modules, components, strong internal boundaries, and domain and/or technical partitioning. Only the **single deployment unit** defines it.", "wrongExplanation": "A, B, E = the lecture explicitly permits all of these inside a monolith. D = confuses QA scope with deployment.", "trap": "Equating \"monolith\" with \"badly structured big ball of mud.\""}, {"id": "L03Q4", "lectureNo": "03", "lectureTitle": "Architectural Thinking", "lectureLabel": "Lecture 03 - Architectural Thinking", "originalNumber": 4, "type": "single", "question": "Connascence is best described as:", "options": [{"key": "A", "text": "Components that communicate with each other"}, {"key": "B", "text": "Components deployed together"}, {"key": "C", "text": "A change in one component requiring another to change for system correctness"}, {"key": "D", "text": "Elements inside a module being related"}, {"key": "E", "text": "Incoming connections to an artifact"}], "correct": ["C"], "hint": "Focus on the defining characteristic, not a related concept.", "explanation": "Exact definition wording — *a change in one requires the other to be modified to maintain overall correctness*. It is a more precise vocabulary for coupling.", "wrongExplanation": "A = communication alone doesn't force change. B = deployment ≠ connascence. D = that's cohesion. E = afferent coupling.", "trap": "Option A sounds right and is the most-picked distractor."}, {"id": "L03Q5", "lectureNo": "03", "lectureTitle": "Architectural Thinking", "lectureLabel": "Lecture 03 - Architectural Thinking", "originalNumber": 5, "type": "single", "question": "\"Convert strong forms of connascence into weaker forms\" refers to which property?", "options": [{"key": "A", "text": "Locality"}, {"key": "B", "text": "Degree"}, {"key": "C", "text": "Strength"}, {"key": "D", "text": "Cohesion"}, {"key": "E", "text": "Granularity"}], "correct": ["C"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Strength = ease of refactoring; the strength ladder (Name→Type→Meaning→Algorithm→Position→Execution→Timing→Value→Identity) gives the refactoring **direction**.", "wrongExplanation": "A = about distance. B = about count. D/E = not connascence properties.", "trap": "Reading the ladder as \"best to worst list\" instead of a refactoring direction."}, {"id": "L03Q6", "lectureNo": "03", "lectureTitle": "Architectural Thinking", "lectureLabel": "Lecture 03 - Architectural Thinking", "originalNumber": 6, "type": "single", "question": "Two independently deployed services communicate **synchronously**. What does the lecture say this introduces?", "options": [{"key": "A", "text": "Static connascence of name"}, {"key": "B", "text": "Dynamic coupling that lets one quantum's operational QAs affect another"}, {"key": "C", "text": "Automatic merging into a monolith"}, {"key": "D", "text": "Higher cohesion in both services"}, {"key": "E", "text": "Removal of the quantum boundary"}], "correct": ["B"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Synchronous communication ⇒ dynamic coupling ⇒ operational QAs of one quantum affect the other ⇒ may influence effective quantum boundaries.", "wrongExplanation": "A = static forms come from source code. C/E = \"may influence boundaries\" ≠ boundary destroyed. D = cohesion is internal, unaffected.", "trap": "Choosing E — the slide says *influence*, not *eliminate*."}, {"id": "L03Q7", "lectureNo": "03", "lectureTitle": "Architectural Thinking", "lectureLabel": "Lecture 03 - Architectural Thinking", "originalNumber": 7, "type": "multi", "question": "Which are **static** connascence types? *(Select all)*", "options": [{"key": "A", "text": "Name"}, {"key": "B", "text": "Execution"}, {"key": "C", "text": "Meaning"}, {"key": "D", "text": "Position"}, {"key": "E", "text": "Identity"}, {"key": "F", "text": "Algorithm"}, {"key": "G", "text": "Timing"}], "correct": ["A", "C", "D", "F"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Static (5) = **N**ame, **T**ype, **M**eaning, **P**osition, **A**lgorithm — detectable from source code. Dynamic (4) = Execution, Timing, Value, Identity — arise at runtime.", "wrongExplanation": "B, E, G are all dynamic (runtime behaviour).", "trap": "⚠ **Over-selection warning:** \"Position\" *sounds* runtime (argument order at call time) but is **static** — you see it in the code. Ticking B/E/G here is the classic over-selection that zeroes the question."}, {"id": "L03Q8", "lectureNo": "03", "lectureTitle": "Architectural Thinking", "lectureLabel": "Lecture 03 - Architectural Thinking", "originalNumber": 8, "type": "multi", "question": "Which are characteristics of an **architectural quantum**? *(Select all)*", "options": [{"key": "A", "text": "Independent deployment"}, {"key": "B", "text": "High functional cohesion"}, {"key": "C", "text": "Zero communication with other quanta"}, {"key": "D", "text": "Low external implementation static coupling"}, {"key": "E", "text": "Shared database with other quanta"}, {"key": "F", "text": "Smallest part that can be deployed and run independently"}], "correct": ["A", "B", "D", "F"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "The 3 stated characteristics are independent deployment, high functional cohesion, low external implementation static coupling; the simple definition is the smallest independently deployable and runnable part.", "wrongExplanation": "C = quanta *do* communicate; that creates dynamic coupling. E = sharing a DB puts them in the **same** quantum, so it's not a characteristic of separate quanta.", "trap": "⚠ **Over-selection warning:** Ticking C. \"Independent deployment\" ≠ \"no communication.\""}, {"id": "L03Q9", "lectureNo": "03", "lectureTitle": "Architectural Thinking", "lectureLabel": "Lecture 03 - Architectural Thinking", "originalNumber": 9, "type": "multi", "question": "Which statements about **technical partitioning** are correct? *(Select all)*", "options": [{"key": "A", "text": "Top-level components organized around technical capabilities"}, {"key": "B", "text": "Examples include presentation, business rules, service, persistence"}, {"key": "C", "text": "Business workflows tend to stay inside one partition"}, {"key": "D", "text": "Related technical code is easy to locate"}, {"key": "E", "text": "Aligns naturally with layered architecture"}, {"key": "F", "text": "Aligns naturally with microservices"}], "correct": ["A", "B", "D", "E"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Technical partitioning = organized by technical capability; advantages = clear separation of technical concerns + easy code location + aligns with layered; trade-off = **workflows cut across several partitions**.", "wrongExplanation": "C = the exact opposite; workflows **cross** partitions. F = microservices align with **domain** partitioning.", "trap": "⚠ **Over-selection warning:** C is the single most common wrong tick. The whole point of technical partitioning is that workflows do **not** stay together."}, {"id": "L03Q10", "lectureNo": "03", "lectureTitle": "Architectural Thinking", "lectureLabel": "Lecture 03 - Architectural Thinking", "originalNumber": 10, "type": "multi", "question": "A good architectural boundary should achieve which of the following? *(Select all)*", "options": [{"key": "A", "text": "High cohesion"}, {"key": "B", "text": "Localized strong coupling"}, {"key": "C", "text": "Maximum number of modules"}, {"key": "D", "text": "Low external coupling"}, {"key": "E", "text": "Elimination of all coupling"}, {"key": "F", "text": "Related behaviour kept together"}], "correct": ["A", "B", "D", "F"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Good module = keep related behaviour together (high cohesion) + keep strongly dependent elements together (localize coupling) + reduce dependencies crossing the boundary (low external coupling).", "wrongExplanation": "C = \"more modules\" is explicitly warned against — splitting cohesive functionality adds coupling. E = coupling is minimized, never eliminated.", "trap": "⚠ **Over-selection warning:** E feels architecturally virtuous. No slide claims zero coupling."}, {"id": "L03Q11", "lectureNo": "03", "lectureTitle": "Architectural Thinking", "lectureLabel": "Lecture 03 - Architectural Thinking", "originalNumber": 11, "type": "multi", "question": "Which are **fallacies of distributed computing**? *(Select all)*", "options": [{"key": "A", "text": "Latency is zero"}, {"key": "B", "text": "The network is secure"}, {"key": "C", "text": "Transport cost is significant"}, {"key": "D", "text": "The topology never changes"}, {"key": "E", "text": "Bandwidth is infinite"}, {"key": "F", "text": "There are many administrators"}], "correct": ["A", "B", "D", "E"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "The 8 fallacies: network reliable, latency zero, bandwidth infinite, network secure, topology never changes, **one** administrator, **transport cost zero**, network homogeneous.", "wrongExplanation": "C = inverted (fallacy is \"transport cost is **zero**\"). F = inverted (fallacy is \"there is only **one** administrator\").", "trap": "⚠ **Over-selection warning:** C and F are the *true* statements dressed as options. The fallacy is always the naive/optimistic version."}, {"id": "L03Q12", "lectureNo": "03", "lectureTitle": "Architectural Thinking", "lectureLabel": "Lecture 03 - Architectural Thinking", "originalNumber": 12, "type": "multi", "question": "According to the lecture, which factors help determine architectural **quantum boundaries**? *(Select all)*", "options": [{"key": "A", "text": "Quality Attribute scope"}, {"key": "B", "text": "Programming language used"}, {"key": "C", "text": "Domain boundaries"}, {"key": "D", "text": "Static coupling"}, {"key": "E", "text": "Shared dependencies"}, {"key": "F", "text": "Team size"}], "correct": ["A", "C", "D", "E"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Four listed determinants: QA scope (different QA needs?), domain boundaries (what belongs together?), static coupling (shared structural dependencies?), shared dependencies (common infrastructure/data?).", "wrongExplanation": "B, F = not mentioned anywhere on this slide; organizational/implementation concerns, not quantum determinants.", "trap": "⚠ **Over-selection warning:** F is plausible real-world (Conway's Law) but is **not in this lecture** — that's an auto-zero tick."}, {"id": "L03Q13", "lectureNo": "03", "lectureTitle": "Architectural Thinking", "lectureLabel": "Lecture 03 - Architectural Thinking", "originalNumber": 13, "type": "multi", "question": "Which are true of **Page-Jones's guidelines** for managing connascence? *(Select all)*", "options": [{"key": "A", "text": "Minimize overall connascence by creating encapsulated elements"}, {"key": "B", "text": "Minimize connascence that crosses encapsulation boundaries"}, {"key": "C", "text": "Minimize connascence within encapsulation boundaries"}, {"key": "D", "text": "Maximize connascence within encapsulation boundaries"}, {"key": "E", "text": "Maximize connascence across boundaries"}], "correct": ["A", "B", "D"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Minimize overall → minimize **across** boundaries → maximize **within** boundaries. Inside a boundary, high cohesion and stronger internal relationships are acceptable; across boundaries, coupling must be minimized.", "wrongExplanation": "C contradicts D. E is the exact inversion of B.", "trap": "⚠ **Over-selection warning:** C looks safe (\"minimize is always good\") but the guideline is deliberately asymmetric."}, {"id": "L03Q14", "lectureNo": "03", "lectureTitle": "Architectural Thinking", "lectureLabel": "Lecture 03 - Architectural Thinking", "originalNumber": 14, "type": "multi", "question": "A system has three areas with different QA needs: public-facing, back-office, and frequently changing. Which conclusions match the lecture? *(Select all)*", "options": [{"key": "A", "text": "Different QA clusters can indicate different architectural boundaries"}, {"key": "B", "text": "All quality attributes should be applied uniformly to avoid inconsistency"}, {"key": "C", "text": "Applying every QA uniformly can create unnecessary and complex trade-offs"}, {"key": "D", "text": "The system must be implemented as microservices"}, {"key": "E", "text": "The relevant question is the **scope** of each QA set"}], "correct": ["A", "C", "E"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Scoped QA = different parts need different combinations/levels. Uniform application creates unnecessary trade-offs; the clusters suggest boundaries; scope → boundaries → architectural quantum.", "wrongExplanation": "B = directly contradicted. D = scoped QAs *may* imply multiple quanta, never *must* imply microservices.", "trap": "⚠ **Over-selection warning:** D. Multiple quanta ⇒ distributed **may be required**, not \"must be microservices.\""}, {"id": "L03Q15", "lectureNo": "03", "lectureTitle": "Architectural Thinking", "lectureLabel": "Lecture 03 - Architectural Thinking", "originalNumber": 15, "type": "multi", "question": "Two strongly connascent elements are moved from one module into two separate modules, dependency unchanged. Which statements are correct? *(Select all)*", "options": [{"key": "A", "text": "The coupling is now more problematic because it crosses a module boundary"}, {"key": "B", "text": "The dependency is removed by the separation"}, {"key": "C", "text": "Locality has worsened, so a weaker form of connascence should now be preferred"}, {"key": "D", "text": "The strong coupling was more acceptable while both were in the same module"}, {"key": "E", "text": "The coupling has become cohesion"}], "correct": ["A", "C", "D"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Locality — strong coupling may be acceptable **within** the same module; across modules/systems the same coupling becomes more problematic. As distance increases, prefer weaker connascence.", "wrongExplanation": "B = moving code does not remove a dependency. E = cohesion is internal relatedness; a cross-module dependency is coupling by definition.", "trap": "⚠ **Over-selection warning:** Believing separation itself is an improvement. Splitting without weakening the dependency makes it **worse**."}, {"id": "L03Q16", "lectureNo": "03", "lectureTitle": "Architectural Thinking", "lectureLabel": "Lecture 03 - Architectural Thinking", "originalNumber": 16, "type": "multi", "question": "Which statements correctly compare **static and dynamic** connascence? *(Select all)*", "options": [{"key": "A", "text": "Static is at source-code level; dynamic occurs at runtime"}, {"key": "B", "text": "Static can be identified through code analysis"}, {"key": "C", "text": "Dynamic is generally easier to refactor"}, {"key": "D", "text": "Dynamic can create significant runtime dependencies"}, {"key": "E", "text": "Static forms are always harmless"}, {"key": "F", "text": "Weaker, more manageable forms are preferable where possible"}], "correct": ["A", "B", "D", "F"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "The 4 comparison dimensions — level, detection, manageability, preference/impact. Static: source-code, code-analysable, easier to refactor, preferred over stronger dynamic forms.", "wrongExplanation": "C = inverted; static is easier. E = \"always harmless\" is absolute; the slide says weaker forms are preferable *where possible*, not that static = safe.", "trap": "⚠ **Over-selection warning:** E. Any option containing **always / never / all** is nearly always a wrong tick in this module."}, {"id": "L03Q17", "lectureNo": "03", "lectureTitle": "Architectural Thinking", "lectureLabel": "Lecture 03 - Architectural Thinking", "originalNumber": 17, "type": "multi", "question": "Under the lecture's decision logic, which conditions point toward a **distributed** architecture? *(Select all)*", "options": [{"key": "A", "text": "Multiple distinct sets of Quality Attributes with independent scopes"}, {"key": "B", "text": "Multiple independently deployable quanta are identified"}, {"key": "C", "text": "One coherent set of Quality Attributes across the system"}, {"key": "D", "text": "The team wants to use a fashionable architecture"}, {"key": "E", "text": "Different parts require different combinations or levels of QAs"}], "correct": ["A", "B", "E"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "One QA scope → one quantum → **monolith viable**. Multiple independent scopes → multiple quanta → **distributed may be required**. The decision begins with architectural requirements, not with a style.", "wrongExplanation": "C = points to monolith. D = explicitly rejected (\"rather than from being chosen for being fashionable\").", "trap": "⚠ **Over-selection warning:** Ticking B *and* thinking it's automatic — the slide says distributed **may be** required. Direction of reasoning: requirements → scope → quanta → style. Never reverse it."}, {"id": "L03Q18", "lectureNo": "03", "lectureTitle": "Architectural Thinking", "lectureLabel": "Lecture 03 - Architectural Thinking", "originalNumber": 18, "type": "multi", "question": "Which statements correctly distinguish cohesion, coupling and connascence? (Select all that apply.)", "options": [{"key": "A", "text": "Cohesion concerns how closely elements inside a module belong together"}, {"key": "B", "text": "Coupling concerns dependencies between software elements"}, {"key": "C", "text": "Connascence means a change in one component can require another to change for correctness"}, {"key": "D", "text": "High cohesion is generally desirable inside a module"}, {"key": "E", "text": "Coupling should be maximized across module boundaries"}, {"key": "F", "text": "Connascence provides a more precise vocabulary for coupling"}], "correct": ["A", "B", "C", "D", "F"], "hint": "Separate internal relatedness from dependency, then recall the more precise coupling vocabulary.", "explanation": "The lecture defines cohesion as internal relatedness, coupling as dependency, and connascence as change-linked dependency needed to preserve correctness.", "wrongExplanation": "E. Dependencies crossing architectural boundaries should be minimized, not maximized.", "trap": "⚠ **Over-selection warning:** Strong internal relationships may be acceptable inside a boundary, not across boundaries."}, {"id": "L03Q19", "lectureNo": "03", "lectureTitle": "Architectural Thinking", "lectureLabel": "Lecture 03 - Architectural Thinking", "originalNumber": 19, "type": "multi", "question": "Which statements about Domain Partitioning are correct? (Select all that apply.)", "options": [{"key": "A", "text": "Top-level components are organized around business domains or workflows"}, {"key": "B", "text": "Related business behaviour tends to stay together"}, {"key": "C", "text": "It aligns naturally with domain-oriented architectures"}, {"key": "D", "text": "It can reduce cross-partition coupling for a business workflow"}, {"key": "E", "text": "It means every technical concern must exist only once globally"}, {"key": "F", "text": "Microservices commonly use domain partitioning"}], "correct": ["A", "B", "C", "D", "F"], "hint": "Think vertically by business capability rather than horizontally by technical layer.", "explanation": "Domain partitioning organizes architecture around business domains, subdomains, workflows or capabilities and keeps related business behaviour together.", "wrongExplanation": "E. Domain modules may still contain technical layers or technical concerns.", "trap": "⚠ **Over-selection warning:** Domain partitioning does not mean technical layers disappear."}, {"id": "L03Q20", "lectureNo": "03", "lectureTitle": "Architectural Thinking", "lectureLabel": "Lecture 03 - Architectural Thinking", "originalNumber": 20, "type": "multi", "question": "Which statements describe a distributed architecture according to Lecture 03? (Select all that apply.)", "options": [{"key": "A", "text": "It contains multiple deployment units"}, {"key": "B", "text": "Deployment units communicate through remote access protocols"}, {"key": "C", "text": "It introduces physical separation between parts of the system"}, {"key": "D", "text": "It can support qualities such as performance, scalability and availability"}, {"key": "E", "text": "It introduces additional architectural trade-offs"}, {"key": "F", "text": "It is defined by having multiple modules inside one deployment unit"}], "correct": ["A", "B", "C", "D", "E"], "hint": "The key separator is physical deployment and remote communication, not internal modularity.", "explanation": "Lecture 03 defines distributed architecture as multiple deployment units communicating remotely. It may support important Quality Attributes but introduces additional trade-offs.", "wrongExplanation": "F. Multiple modules can exist within a monolith; one deployment unit is still monolithic.", "trap": "⚠ **Over-selection warning:** Multiple modules do not automatically mean multiple deployment units."}, {"id": "L04Q1", "lectureNo": "04", "lectureTitle": "Monolithic Architectural Styles", "lectureLabel": "Lecture 04 - Monolithic Architectural Styles", "originalNumber": 1, "type": "single", "question": "CQRS is best classified as:", "options": [{"key": "A", "text": "An architectural style"}, {"key": "B", "text": "An architectural pattern"}, {"key": "C", "text": "A partitioning approach"}, {"key": "D", "text": "A quality attribute"}, {"key": "E", "text": "A deployment topology"}], "correct": ["B"], "hint": "Focus on the defining characteristic, not a related concept.", "explanation": "Style = overall structure + topology + default characteristics (e.g. Microservices). Pattern = contextualized solution to a particular problem, **applied within** a style (e.g. CQRS).", "wrongExplanation": "A = the slide's style example is Microservices. C = technical/domain are the partitioning options. D = CQRS is a solution, not a measurable property. E = it isn't a deployment shape.", "trap": "Treating \"style\" and \"pattern\" as synonyms. Style is broader; pattern lives **inside** a style."}, {"id": "L04Q2", "lectureNo": "04", "lectureTitle": "Monolithic Architectural Styles", "lectureLabel": "Lecture 04 - Monolithic Architectural Styles", "originalNumber": 2, "type": "single", "question": "Which layer arrangement enables **Layers of Isolation**?", "options": [{"key": "A", "text": "Open layers"}, {"key": "B", "text": "Closed layers"}, {"key": "C", "text": "Shared components"}, {"key": "D", "text": "Open services layer"}, {"key": "E", "text": "Domain modules"}], "correct": ["B"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Layers of Isolation = changes in one layer don't affect others while contracts remain unchanged. Explicitly **enabled by closed layers**, because requests cannot skip layers.", "wrongExplanation": "A/D = bypassing increases coupling and **reduces** isolation. C = shared components are a Business-layer access rule. E = belongs to Modular Monolith.", "trap": "Open layers sound more \"flexible,\" so students pick A."}, {"id": "L04Q3", "lectureNo": "04", "lectureTitle": "Monolithic Architectural Styles", "lectureLabel": "Lecture 04 - Monolithic Architectural Styles", "originalNumber": 3, "type": "single", "question": "Requests pass down through every layer and back up with no layer performing business logic. This is:", "options": [{"key": "A", "text": "Layers of Isolation"}, {"key": "B", "text": "Architecture Sinkhole Antipattern"}, {"key": "C", "text": "Open services layer"}, {"key": "D", "text": "Big Ball of Mud"}, {"key": "E", "text": "Technical partitioning"}], "correct": ["B"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Sinkhole = pass-through with **no business logic performed**, causing unnecessary object instantiation and processing → drains memory and performance.", "wrongExplanation": "A = a benefit, not an antipattern. C = a deliberate bypass design. D = mentioned only for Microkernel customization risk. E = the partitioning type, not the antipattern.", "trap": "Assuming any sinkhole scenario means the architecture failed — the slide says **every** layered architecture has some."}, {"id": "L04Q4", "lectureNo": "04", "lectureTitle": "Monolithic Architectural Styles", "lectureLabel": "Lecture 04 - Monolithic Architectural Styles", "originalNumber": 4, "type": "single", "question": "In Microkernel architecture, plug-ins should primarily communicate with:", "options": [{"key": "A", "text": "Each other, directly"}, {"key": "B", "text": "The core system"}, {"key": "C", "text": "The presentation layer"}, {"key": "D", "text": "A shared plug-in database"}, {"key": "E", "text": "An event broker"}], "correct": ["B"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Plug-ins should be self-contained, **independent of other plug-ins**, and connected primarily to the core. Typical communication is core→plug-in via method/function call.", "wrongExplanation": "A = plug-in independence is the stated ideal. C = layers are internal to the core. D = plug-ins may own **their own** data stores. E = EDA belongs to L5.", "trap": "Ticking A because real plug-in ecosystems often chain."}, {"id": "L04Q5", "lectureNo": "04", "lectureTitle": "Monolithic Architectural Styles", "lectureLabel": "Lecture 04 - Monolithic Architectural Styles", "originalNumber": 5, "type": "single", "question": "Which style has the **highest Modularity, Maintainability, Testability, Deployability and Evolvability** ratings among the three monolithic styles?", "options": [{"key": "A", "text": "Layered"}, {"key": "B", "text": "Modular Monolith"}, {"key": "C", "text": "Microkernel"}, {"key": "D", "text": "All are equal"}, {"key": "E", "text": "Layered, because of Layers of Isolation"}], "correct": ["C"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Microkernel scores ★★★ on those five; Modular Monolith ★★; Layered ★ (Testability ★★). All three: 1 quantum, cost $, Scalability/Elasticity/Fault tolerance = ★.", "wrongExplanation": "A = lowest on those. B = middle. D = ratings differ. E = isolation doesn't raise the rating table values.", "trap": "Layered has the highest **Simplicity** (★★★★★) — that's a different row."}, {"id": "L04Q6", "lectureNo": "04", "lectureTitle": "Monolithic Architectural Styles", "lectureLabel": "Lecture 04 - Monolithic Architectural Styles", "originalNumber": 6, "type": "single", "question": "A modular monolith gives each module its own database. The application is now:", "options": [{"key": "A", "text": "Distributed, because there are multiple data stores"}, {"key": "B", "text": "Service-based architecture"}, {"key": "C", "text": "Still monolithic, because deployment is one application unit"}, {"key": "D", "text": "Two architectural quanta"}, {"key": "E", "text": "Technically partitioned"}], "correct": ["C"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "A modular monolith may use one shared database **or** separate module databases. Data topology alone does not change the classification — it remains monolithic because deployment is a single application unit.", "wrongExplanation": "A = distribution requires multiple **deployment units** over a network. B/D = one deployment unit = 1 quantum. E = modular monolith is **domain** partitioned.", "trap": "Equating \"database per module\" with microservices."}, {"id": "L04Q7", "lectureNo": "04", "lectureTitle": "Monolithic Architectural Styles", "lectureLabel": "Lecture 04 - Monolithic Architectural Styles", "originalNumber": 7, "type": "multi", "question": "Which aspects does an **architectural style** describe? *(Select all)*", "options": [{"key": "A", "text": "Component topology"}, {"key": "B", "text": "Physical architecture"}, {"key": "C", "text": "Deployment"}, {"key": "D", "text": "Communication style"}, {"key": "E", "text": "Data topology"}, {"key": "F", "text": "Project budget approval process"}], "correct": ["A", "B", "C", "D", "E"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "The 5-row style table: component topology (how components/dependencies organized), physical architecture (monolithic or distributed), deployment, communication style, data topology.", "wrongExplanation": "F = a project-management concern, never listed.", "trap": "⚠ **Over-selection warning:** Under-selecting here out of fear. All five are on the slide; only F is bait."}, {"id": "L04Q8", "lectureNo": "04", "lectureTitle": "Monolithic Architectural Styles", "lectureLabel": "Lecture 04 - Monolithic Architectural Styles", "originalNumber": 8, "type": "multi", "question": "Which are true of **Layered Architecture**? *(Select all)*", "options": [{"key": "A", "text": "Technically partitioned"}, {"key": "B", "text": "Domain partitioned"}, {"key": "C", "text": "Number of quanta = 1"}, {"key": "D", "text": "Simplicity ★★★★★"}, {"key": "E", "text": "Scalability ★★★★"}, {"key": "F", "text": "Common layers: Presentation, Business, Persistence, Database"}], "correct": ["A", "C", "D", "F"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Layered = technical partitioning, 1 quantum, cost $, Simplicity ★★★★★, but Modularity/Maintainability/Deployability/Evolvability/Scalability/Elasticity/Fault tolerance all ★.", "wrongExplanation": "B = that's Modular Monolith. E = Scalability is **★**, the weakest rating.", "trap": "⚠ **Over-selection warning:** E. Simplicity being maximal makes people assume other ratings are also high."}, {"id": "L04Q9", "lectureNo": "04", "lectureTitle": "Monolithic Architectural Styles", "lectureLabel": "Lecture 04 - Monolithic Architectural Styles", "originalNumber": 9, "type": "multi", "question": "Which statements about **open and closed layers** are correct? *(Select all)*", "options": [{"key": "A", "text": "A closed layer cannot be skipped by a request"}, {"key": "B", "text": "An open layer may be bypassed"}, {"key": "C", "text": "Bypassing reduces coupling between layers"}, {"key": "D", "text": "More bypassing leads to less isolation"}, {"key": "E", "text": "Whether a layer is open or closed is an architectural decision"}, {"key": "F", "text": "Open layers are always preferable for performance"}], "correct": ["A", "B", "D", "E"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Closed = sequential top-to-bottom, no skipping (enables Layers of Isolation). Open = may be bypassed to avoid unnecessary processing, but more bypassing → higher coupling → less isolation.", "wrongExplanation": "C = inverted; bypassing **increases** coupling. F = \"always\" — it's a trade-off decision.", "trap": "⚠ **Over-selection warning:** C is the exact inversion trick this module reuses constantly."}, {"id": "L04Q10", "lectureNo": "04", "lectureTitle": "Monolithic Architectural Styles", "lectureLabel": "Lecture 04 - Monolithic Architectural Styles", "originalNumber": 10, "type": "multi", "question": "Which are correct about the **Architecture Sinkhole Antipattern**? *(Select all)*", "options": [{"key": "A", "text": "Requests are passed layer to layer with no business logic performed"}, {"key": "B", "text": "It causes unnecessary object instantiation and processing"}, {"key": "C", "text": "It drains memory consumption and performance"}, {"key": "D", "text": "It only occurs in domain-partitioned architectures"}, {"key": "E", "text": "Every layered architecture will have some scenarios that qualify"}, {"key": "F", "text": "It is solved by making every layer closed"}], "correct": ["A", "B", "C", "E"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Sinkhole = pure pass-through requests. The lecture explicitly notes that every layered architecture will have some sinkhole scenarios; the concern is **how many**.", "wrongExplanation": "D = it's a **layered** (technically partitioned) antipattern. F = closing layers forces pass-through, which **causes** the sinkhole; open layers relieve it.", "trap": "⚠ **Over-selection warning:** F. Closed layers are good for isolation but are exactly what makes sinkholes appear."}, {"id": "L04Q11", "lectureNo": "04", "lectureTitle": "Monolithic Architectural Styles", "lectureLabel": "Lecture 04 - Monolithic Architectural Styles", "originalNumber": 11, "type": "multi", "question": "Which are true of the **Modular Monolith**? *(Select all)*", "options": [{"key": "A", "text": "One deployment unit"}, {"key": "B", "text": "Primarily domain partitioned"}, {"key": "C", "text": "Layers may exist inside individual domain modules"}, {"key": "D", "text": "Must use exactly one shared database"}, {"key": "E", "text": "Naturally supports Domain-Driven Design"}, {"key": "F", "text": "Number of quanta = 1"}], "correct": ["A", "B", "C", "E", "F"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Modular Monolith = one deployment unit organized around business domains; layers may exist inside modules; supports DDD because it is domain partitioned; may use one shared DB **or** module-owned DBs.", "wrongExplanation": "D = \"must\" is false; both data topologies are permitted.", "trap": "⚠ **Over-selection warning:** D contains a hidden absolute. Also note C — domain partitioning does **not** abolish layers."}, {"id": "L04Q12", "lectureNo": "04", "lectureTitle": "Monolithic Architectural Styles", "lectureLabel": "Lecture 04 - Monolithic Architectural Styles", "originalNumber": 12, "type": "multi", "question": "A product's UI and database technologies are replaced frequently across the whole system. Which statements match the lecture? *(Select all)*", "options": [{"key": "A", "text": "Modular Monolith is a poor fit for this situation"}, {"key": "B", "text": "Technical changes may affect many or all domain modules"}, {"key": "C", "text": "Such changes require significant coordination between domain teams"}, {"key": "D", "text": "Layered architecture may be a better choice"}, {"key": "E", "text": "Microkernel is required because plug-ins isolate technical change"}], "correct": ["A", "B", "C", "D"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Because the Modular Monolith is domain partitioned, technical concerns are repeated inside every module, so cross-cutting technical change hits many modules → Layered is recommended instead.", "wrongExplanation": "E = Microkernel isolates **variable/customizable feature** behaviour, not UI/DB technology swaps; and \"required\" is absolute.", "trap": "⚠ **Over-selection warning:** E. Microkernel is the answer for **customization/variability**, not for technical technology churn."}, {"id": "L04Q13", "lectureNo": "04", "lectureTitle": "Monolithic Architectural Styles", "lectureLabel": "Lecture 04 - Monolithic Architectural Styles", "originalNumber": 13, "type": "multi", "question": "Which describe **plug-ins** in Microkernel architecture? *(Select all)*", "options": [{"key": "A", "text": "Specialized, variable, customizable functionality"}, {"key": "B", "text": "More likely to change than the core"}, {"key": "C", "text": "Should ideally be independent of other plug-ins"}, {"key": "D", "text": "May be compile-based or runtime-based"}, {"key": "E", "text": "Must always share the core's database"}, {"key": "F", "text": "May own their own data store"}], "correct": ["A", "B", "C", "D", "F"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Core = minimum, stable functionality; plug-ins = specialized/variable/customizable/likely-to-change, self-contained, connected primarily to the core; compile-based (redeploy) vs runtime-based (hot add/remove); plug-ins can own their own data stores.", "wrongExplanation": "E = the data-ownership diagram explicitly shows plug-in-owned data stores.", "trap": "⚠ **Over-selection warning:** E — \"must always\" again."}, {"id": "L04Q14", "lectureNo": "04", "lectureTitle": "Monolithic Architectural Styles", "lectureLabel": "Lecture 04 - Monolithic Architectural Styles", "originalNumber": 14, "type": "multi", "question": "What may a **Plug-in Registry** contain, and what do **contracts** define? *(Select all)*", "options": [{"key": "A", "text": "Plug-in name"}, {"key": "B", "text": "Plug-in location or reference"}, {"key": "C", "text": "Contract information"}, {"key": "D", "text": "Expected behaviour, input data, output data"}, {"key": "E", "text": "The core's business rules"}, {"key": "F", "text": "Deployment cost estimates"}], "correct": ["A", "B", "C", "D"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "The core must know which plug-ins exist and how to reach them → registry holds name, location/reference, contract info. Contracts define expected behaviour, input data, output data, allowing plug-ins to vary **without specialized core logic for each one**.", "wrongExplanation": "E = core rules aren't registry content. F = never mentioned.", "trap": "⚠ **Over-selection warning:** Forgetting the *purpose* clause — contracts exist so the core doesn't need per-plug-in special-case code."}, {"id": "L04Q15", "lectureNo": "04", "lectureTitle": "Monolithic Architectural Styles", "lectureLabel": "Lecture 04 - Monolithic Architectural Styles", "originalNumber": 15, "type": "multi", "question": "A commercial product has a stable core plus optional customer-specific features that change often, with **no need to scale those features independently**. Which statements are correct? *(Select all)*", "options": [{"key": "A", "text": "Microkernel is the most appropriate choice"}, {"key": "B", "text": "Variability can be isolated without introducing distributed-system complexity"}, {"key": "C", "text": "Deploying each optional feature as a remote service adds network and operational complexity"}, {"key": "D", "text": "Event-Driven Architecture is required because features change independently"}, {"key": "E", "text": "The core should hold the stable, minimum functionality"}], "correct": ["A", "B", "C", "E"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Microkernel is a natural fit for product-based applications needing customization/extensibility; it moves variation away from a stable core. Remote plug-ins via REST/messaging introduce distributed-system complexity, which isn't justified when independent scaling isn't required.", "wrongExplanation": "D = \"required\" is false; frequent change alone does not mandate async distribution.", "trap": "⚠ **Over-selection warning:** This is the **sample paper's scenario question**. The tempting wrong logic is \"frequently changing ⇒ separate deployment.\" Independent **scaling** need is what would justify distribution."}, {"id": "L04Q16", "lectureNo": "04", "lectureTitle": "Monolithic Architectural Styles", "lectureLabel": "Lecture 04 - Monolithic Architectural Styles", "originalNumber": 16, "type": "multi", "question": "Which rows of the three-style comparison table are correct? *(Select all)*", "options": [{"key": "A", "text": "Layered → primary structure = technical layers"}, {"key": "B", "text": "Modular Monolith → main structural benefit = domain modularity"}, {"key": "C", "text": "Microkernel → main structural benefit = extensibility"}, {"key": "D", "text": "Microkernel → partitioning = technical and/or domain"}, {"key": "E", "text": "Modular Monolith → typical deployment = distributed"}, {"key": "F", "text": "Layered → best fit = customizable systems"}], "correct": ["A", "B", "C", "D"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "All three are typically **monolithic** deployment. Best fit: Layered = simple technical structure; Modular Monolith = domain-oriented; Microkernel = customizable systems.", "wrongExplanation": "E = Modular Monolith deploys monolithically. F = customizable systems = **Microkernel**.", "trap": "⚠ **Over-selection warning:** Assuming \"modular\" implies distributed deployment."}, {"id": "L04Q17", "lectureNo": "04", "lectureTitle": "Monolithic Architectural Styles", "lectureLabel": "Lecture 04 - Monolithic Architectural Styles", "originalNumber": 17, "type": "multi", "question": "Which are stated advantages of monolithic architectures over distributed ones? *(Select all)*", "options": [{"key": "A", "text": "Fewer deployment units"}, {"key": "B", "text": "No required remote communication between internal components"}, {"key": "C", "text": "Lower infrastructure and network complexity"}, {"key": "D", "text": "Lower overall cost"}, {"key": "E", "text": "Higher fault tolerance and elasticity"}, {"key": "F", "text": "Local calls avoid the problems of remote communication"}], "correct": ["A", "B", "C", "D", "F"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Monolith benefits list, tied back to the Fallacies of Distributed Computing from L3. All three monolithic styles rate Scalability, Elasticity and Fault tolerance at ★.", "wrongExplanation": "E = fault tolerance and elasticity are the **weakest** ratings (★) for all monolithic styles; those are distributed-architecture strengths.", "trap": "⚠ **Over-selection warning:** E. \"Simpler = more reliable\" feels intuitive but contradicts the ratings table."}, {"id": "L04Q18", "lectureNo": "04", "lectureTitle": "Monolithic Architectural Styles", "lectureLabel": "Lecture 04 - Monolithic Architectural Styles", "originalNumber": 18, "type": "multi", "question": "Which statements about monolithic architectural styles are correct? (Select all that apply.)", "options": [{"key": "A", "text": "A monolith may contain many components and modules"}, {"key": "B", "text": "A monolith may have strong internal modularity"}, {"key": "C", "text": "Its elements normally belong to a single application deployment boundary"}, {"key": "D", "text": "Layered, Modular Monolith and Microkernel are monolithic styles discussed in the lecture"}, {"key": "E", "text": "Monolithic means the system cannot be domain partitioned"}, {"key": "F", "text": "Monolithic architectures avoid required remote calls between internal application components"}], "correct": ["A", "B", "C", "D", "F"], "hint": "Monolithic describes the deployment boundary, not the absence of internal structure.", "explanation": "Monoliths can be richly structured internally while remaining within one application deployment boundary.", "wrongExplanation": "E. A Modular Monolith is domain partitioned while still remaining monolithic.", "trap": "⚠ **Over-selection warning:** Do not equate monolith with a Big Ball of Mud."}, {"id": "L04Q19", "lectureNo": "04", "lectureTitle": "Monolithic Architectural Styles", "lectureLabel": "Lecture 04 - Monolithic Architectural Styles", "originalNumber": 19, "type": "multi", "question": "Which situations are suitable for Layered Architecture? (Select all that apply.)", "options": [{"key": "A", "text": "Small, simple applications"}, {"key": "B", "text": "Websites"}, {"key": "C", "text": "Tight budgets"}, {"key": "D", "text": "Tight development schedules"}, {"key": "E", "text": "Development must begin before long-term architectural direction is clear"}, {"key": "F", "text": "Systems requiring very high scalability, agility and deployability"}], "correct": ["A", "B", "C", "D", "E"], "hint": "Layered Architecture trades advanced scalability and deployability for simplicity and lower cost.", "explanation": "The lecture recommends Layered Architecture for small/simple systems, websites, tight budgets/schedules, and uncertain long-term architectural direction.", "wrongExplanation": "F. It is less suitable for large systems that require high scalability, agility and deployability.", "trap": "⚠ **Over-selection warning:** High simplicity does not imply high scalability."}, {"id": "L04Q20", "lectureNo": "04", "lectureTitle": "Monolithic Architectural Styles", "lectureLabel": "Lecture 04 - Monolithic Architectural Styles", "originalNumber": 20, "type": "multi", "question": "Which statements explain why Microkernel Architecture is suitable for customizable products? (Select all that apply.)", "options": [{"key": "A", "text": "It isolates variable behaviour from a stable core"}, {"key": "B", "text": "Plug-ins support addition, removal and modification of features"}, {"key": "C", "text": "It can reduce complex customization logic in the core"}, {"key": "D", "text": "It is useful where variation among deployments is common"}, {"key": "E", "text": "It requires every plug-in to directly depend on every other plug-in"}, {"key": "F", "text": "Typical examples include development tools and browser extensions"}], "correct": ["A", "B", "C", "D", "F"], "hint": "The stable part stays in the core; changeable capabilities move into extensions.", "explanation": "Microkernel supports a stable core plus variable plug-ins, making it suitable for customization and frequent feature variation.", "wrongExplanation": "E. Plug-ins should ideally remain independent of other plug-ins.", "trap": "⚠ **Over-selection warning:** Extensibility depends on plug-in independence, not plug-in-to-plug-in coupling."}, {"id": "L05Q1", "lectureNo": "05", "lectureTitle": "Distributed Architectural Styles", "lectureLabel": "Lecture 05 - Distributed Architectural Styles", "originalNumber": 1, "type": "single", "question": "In Event-Driven Architecture, an **event** is best defined as:", "options": [{"key": "A", "text": "A command instructing a service to act"}, {"key": "B", "text": "A description of something that has already happened"}, {"key": "C", "text": "A synchronous request for data"}, {"key": "D", "text": "A workflow state record"}, {"key": "E", "text": "A contract between processors"}], "correct": ["B"], "hint": "Focus on the defining characteristic, not a related concept.", "explanation": "EDA is based on asynchronous event processing; an event describes something that **has already happened** (Order Placed, Payment Applied). Processors react without the producer coordinating them.", "wrongExplanation": "A = commands are what the **mediator** sends, after the initiating event. C = EDA is asynchronous. D = state is held by the mediator, not by the event definition. E = contracts belong to Microkernel/registry (L4).", "trap": "Confusing **event** (past fact, published) with **command** (instruction, directed)."}, {"id": "L05Q2", "lectureNo": "05", "lectureTitle": "Distributed Architectural Styles", "lectureLabel": "Lecture 05 - Distributed Architectural Styles", "originalNumber": 2, "type": "single", "question": "Which distributed style typically uses a **centrally shared monolithic database**?", "options": [{"key": "A", "text": "Microservices"}, {"key": "B", "text": "Event-Driven Architecture"}, {"key": "C", "text": "Service-Based Architecture"}, {"key": "D", "text": "Space-Based Architecture"}, {"key": "E", "text": "None — all distributed styles use database per service"}], "correct": ["C"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Service-Based = 4–12 coarse domain services, separately deployed, relatively simple topology, **typically one shared monolithic database**. That shared DB is also its main coupling weakness.", "wrongExplanation": "A = Database per Service. B = broker-mediated, not defined by shared DB. D = in-memory grid with async persistence. E = false generalisation.", "trap": "Assuming \"distributed\" always implies data separation."}, {"id": "L05Q3", "lectureNo": "05", "lectureTitle": "Distributed Architectural Styles", "lectureLabel": "Lecture 05 - Distributed Architectural Styles", "originalNumber": 3, "type": "single", "question": "Over-decomposing into services that are too small produces:", "options": [{"key": "A", "text": "Distributed monolith by definition"}, {"key": "B", "text": "Grains of Sand antipattern"}, {"key": "C", "text": "Architecture Sinkhole antipattern"}, {"key": "D", "text": "Bounded context violation"}, {"key": "E", "text": "Choreography"}], "correct": ["B"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Too-fine granularity → increased communication, harder workflow coordination, higher latency, harder data consistency = **Grains of Sand**, which can lead to a **Distributed Big Ball of Mud**.", "wrongExplanation": "A = the lecture names *Distributed Big Ball of Mud* as the consequence, not \"distributed monolith.\" C = a **Layered** antipattern (L4). D = a different concern. E = a coordination approach.", "trap": "Picking C by mixing L4 and L5 antipatterns."}, {"id": "L05Q4", "lectureNo": "05", "lectureTitle": "Distributed Architectural Styles", "lectureLabel": "Lecture 05 - Distributed Architectural Styles", "originalNumber": 4, "type": "single", "question": "Which style has **Responsiveness ★★★★★, Scalability ★★★★★, Elasticity ★★★★★** but **Fault tolerance ★★**?", "options": [{"key": "A", "text": "Microservices"}, {"key": "B", "text": "Event-Driven Architecture"}, {"key": "C", "text": "Service-Based Architecture"}, {"key": "D", "text": "Space-Based Architecture"}, {"key": "E", "text": "Modular Monolith"}], "correct": ["D"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Space-Based maxes responsiveness/scalability/elasticity (its whole purpose) but scores Simplicity ★, Testability ★, Fault tolerance ★★, cost $$$$.", "wrongExplanation": "A = Fault tolerance ★★★★★, Responsiveness only ★★. B = Elasticity ★★★. C = mid-range across the board. E = monolithic style with ★ on all three.", "trap": "Space-Based is the only style where the \"best scaling\" style has **weak** fault tolerance."}, {"id": "L05Q5", "lectureNo": "05", "lectureTitle": "Distributed Architectural Styles", "lectureLabel": "Lecture 05 - Distributed Architectural Styles", "originalNumber": 5, "type": "single", "question": "In the **mediator topology**, communication after the initiating event is received typically uses:", "options": [{"key": "A", "text": "Events published to a broker"}, {"key": "B", "text": "Command messages sent to processors"}, {"key": "C", "text": "Synchronous REST calls only"}, {"key": "D", "text": "Shared database polling"}, {"key": "E", "text": "Publish/subscribe fan-out"}], "correct": ["B"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "The mediator receives the initiating event, knows the required steps, and **sends command messages** to event processors; the mediated topology typically uses **messages rather than events** after the initiating event.", "wrongExplanation": "A/E = describe the **choreographed/broker** topology. C = protocol not specified as REST-only. D = never stated.", "trap": "Assuming \"event-driven\" means everything downstream is an event."}, {"id": "L05Q6", "lectureNo": "05", "lectureTitle": "Distributed Architectural Styles", "lectureLabel": "Lecture 05 - Distributed Architectural Styles", "originalNumber": 6, "type": "single", "question": "In Space-Based Architecture, persistent database updates occur:", "options": [{"key": "A", "text": "Synchronously within each transaction"}, {"key": "B", "text": "Asynchronously, outside the normal transaction path"}, {"key": "C", "text": "Only on system shutdown"}, {"key": "D", "text": "Through the API gateway"}, {"key": "E", "text": "Via the event mediator"}], "correct": ["B"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "SBA removes the central database as a **synchronous constraint**. Transactional data is held primarily in memory with replicated in-memory caching; persistent updates happen asynchronously via the **Data Writer**, so the DB is not involved in every normal transaction.", "wrongExplanation": "A = exactly what SBA eliminates. C = never stated. D = microservices component. E = EDA component.", "trap": "Thinking SBA has no database at all. It has one — just off the hot path."}, {"id": "L05Q7", "lectureNo": "05", "lectureTitle": "Distributed Architectural Styles", "lectureLabel": "Lecture 05 - Distributed Architectural Styles", "originalNumber": 7, "type": "multi", "question": "Which does distribution usually **increase**? *(Select all)*", "options": [{"key": "A", "text": "Communication complexity"}, {"key": "B", "text": "Infrastructure cost"}, {"key": "C", "text": "Operational complexity"}, {"key": "D", "text": "Simplicity of testing"}, {"key": "E", "text": "Debugging difficulty"}, {"key": "F", "text": "Data consistency and workflow coordination problems"}], "correct": ["A", "B", "C", "E", "F"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Trade-off table — improves: scalability, deployability, fault tolerance, team autonomy, evolvability, technology flexibility. Increases: communication complexity, infrastructure cost, operational complexity, testing difficulty, debugging difficulty, data consistency/coordination problems.", "wrongExplanation": "D = inverted; **testing difficulty** increases.", "trap": "⚠ **Over-selection warning:** D is the standard inversion bait. Read \"increases **testing difficulty**\", not \"increases simplicity.\""}, {"id": "L05Q8", "lectureNo": "05", "lectureTitle": "Distributed Architectural Styles", "lectureLabel": "Lecture 05 - Distributed Architectural Styles", "originalNumber": 8, "type": "multi", "question": "Which are characteristics of **Service-Based Architecture**? *(Select all)*", "options": [{"key": "A", "text": "Usually 4 to 12 domain services"}, {"key": "B", "text": "Coarse-grained functionality"}, {"key": "C", "text": "Database per service is mandatory"}, {"key": "D", "text": "Separately deployed services"}, {"key": "E", "text": "Relatively simple distributed topology"}, {"key": "F", "text": "Domain partitioned"}], "correct": ["A", "B", "D", "E", "F"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Service-Based = pragmatic distributed style, coarse domain services, separately deployed, simple topology, typically **shared** monolithic DB, domain partitioning, cost $$.", "wrongExplanation": "C = the opposite — it typically uses a **centrally shared** database. That's Microservices' rule.", "trap": "⚠ **Over-selection warning:** C. Both are domain-partitioned distributed styles; the **data topology** is the separator."}, {"id": "L05Q9", "lectureNo": "05", "lectureTitle": "Distributed Architectural Styles", "lectureLabel": "Lecture 05 - Distributed Architectural Styles", "originalNumber": 9, "type": "multi", "question": "Which statements about **bounded contexts** in Microservices are correct? *(Select all)*", "options": [{"key": "A", "text": "They define the boundaries of each service partition"}, {"key": "B", "text": "Implementation details may be coupled **inside** the boundary"}, {"key": "C", "text": "Other services should not depend on internal code, schema or database structures"}, {"key": "D", "text": "They come from Domain-Driven Design"}, {"key": "E", "text": "They require all services to share one schema for consistency"}], "correct": ["A", "B", "C", "D"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Microservices is strongly influenced by DDD. A bounded context keeps domain concepts, code and data internally consistent; inside, coupling is acceptable; outside, no dependence on internals. Microservices **avoids** shared schemas/databases as integration mechanisms.", "wrongExplanation": "E = directly contradicted.", "trap": "⚠ **Over-selection warning:** B looks wrong (\"coupling is bad\") but internal coupling inside a bounded context is explicitly allowed — same logic as **locality of connascence** in L3."}, {"id": "L05Q10", "lectureNo": "05", "lectureTitle": "Distributed Architectural Styles", "lectureLabel": "Lecture 05 - Distributed Architectural Styles", "originalNumber": 10, "type": "multi", "question": "Which are consequences of making microservices **too fine-grained**? *(Select all)*", "options": [{"key": "A", "text": "Communication increases"}, {"key": "B", "text": "Workflows become harder to coordinate"}, {"key": "C", "text": "Latency increases"}, {"key": "D", "text": "Data consistency becomes harder"}, {"key": "E", "text": "Fault tolerance automatically improves"}, {"key": "F", "text": "Risk of Distributed Big Ball of Mud"}], "correct": ["A", "B", "C", "D", "F"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Granularity is the hardest microservices decision; boundaries should consider **Purpose, Transactions, Choreography**. Over-decomposition = Grains of Sand → Distributed Big Ball of Mud.", "wrongExplanation": "E = more services ≠ better fault tolerance; excessive interservice communication is listed as a **weakness**.", "trap": "⚠ **Over-selection warning:** E — \"more independent services must mean more resilience.\""}, {"id": "L05Q11", "lectureNo": "05", "lectureTitle": "Distributed Architectural Styles", "lectureLabel": "Lecture 05 - Distributed Architectural Styles", "originalNumber": 11, "type": "multi", "question": "Which describe **Choreography** (as opposed to Orchestration)? *(Select all)*", "options": [{"key": "A", "text": "No central coordinator"}, {"key": "B", "text": "Each service calls or reacts to other services as needed"}, {"key": "C", "text": "Preserves the highly decoupled philosophy of microservices"}, {"key": "D", "text": "Creates additional coupling between participants and a coordinator"}, {"key": "E", "text": "Avoids coupling services to a central coordinator"}], "correct": ["A", "B", "C", "E"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Choreography = no central coordinator, direct service collaboration, preserves decoupling; error handling and coordination become harder. Orchestration = localized mediator/orchestration service coordinating calls, adding coupling to the orchestrator.", "wrongExplanation": "D = that's Orchestration's cost.", "trap": "⚠ **Over-selection warning:** This is the **sample paper's** question shape (\"no central component controlling execution\" ⇒ **choreographed/broker**)."}, {"id": "L05Q12", "lectureNo": "05", "lectureTitle": "Distributed Architectural Styles", "lectureLabel": "Lecture 05 - Distributed Architectural Styles", "originalNumber": 12, "type": "multi", "question": "Which are **advantages** of the choreographed/broker EDA topology? *(Select all)*", "options": [{"key": "A", "text": "Strong decoupling"}, {"key": "B", "text": "High responsiveness"}, {"key": "C", "text": "High scalability"}, {"key": "D", "text": "Easy workflow state tracking"}, {"key": "E", "text": "Good fault tolerance"}, {"key": "F", "text": "Parallel processing"}], "correct": ["A", "B", "C", "E", "F"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Choreographed advantages: strong decoupling, high responsiveness, high scalability, good fault tolerance, parallel processing. Challenges: workflow visibility, **state tracking**, error handling, debugging, knowing when the workflow completed.", "wrongExplanation": "D = state tracking is a listed **challenge**.", "trap": "⚠ **Over-selection warning:** D. Decoupling buys speed and pays with visibility."}, {"id": "L05Q13", "lectureNo": "05", "lectureTitle": "Distributed Architectural Styles", "lectureLabel": "Lecture 05 - Distributed Architectural Styles", "originalNumber": 13, "type": "multi", "question": "What can the **event mediator** do? *(Select all)*", "options": [{"key": "A", "text": "Receive the initiating event"}, {"key": "B", "text": "Know the steps needed to process it"}, {"key": "C", "text": "Send command messages to event processors"}, {"key": "D", "text": "Maintain workflow state"}, {"key": "E", "text": "Support error handling, recoverability and restart"}, {"key": "F", "text": "Eliminate the need for event processors"}], "correct": ["A", "B", "C", "D", "E"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Mediator topology: initiating event → event queue → event mediator → channels/commands → event processors. The mediator holds workflow knowledge and state.", "wrongExplanation": "F = processors still perform the work; the mediator only coordinates.", "trap": "⚠ **Over-selection warning:** Reading \"central controller\" as \"does everything itself.\""}, {"id": "L05Q14", "lectureNo": "05", "lectureTitle": "Distributed Architectural Styles", "lectureLabel": "Lecture 05 - Distributed Architectural Styles", "originalNumber": 14, "type": "multi", "question": "Which statements about **Space-Based Architecture** are correct? *(Select all)*", "options": [{"key": "A", "text": "Requests are processed by Processing Units"}, {"key": "B", "text": "Transactional data is held primarily in memory"}, {"key": "C", "text": "Replicated in-memory caching is the standard model"}, {"key": "D", "text": "The database is involved in every normal transaction"}, {"key": "E", "text": "Virtualized Middleware handles messaging, data, processing and deployment"}, {"key": "F", "text": "It targets high scalability, elasticity and concurrency"}], "correct": ["A", "B", "C", "E", "F"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "SBA exists because replicating web/app servers still leaves the **central database as the limiting resource**. It removes the DB from the synchronous path; persistence is asynchronous via Data Reader/Data Writer.", "wrongExplanation": "D = explicitly the opposite — the DB is **no longer** involved in every normal transaction.", "trap": "⚠ **Over-selection warning:** D is a near-verbatim inversion of the slide sentence."}, {"id": "L05Q15", "lectureNo": "05", "lectureTitle": "Distributed Architectural Styles", "lectureLabel": "Lecture 05 - Distributed Architectural Styles", "originalNumber": 15, "type": "multi", "question": "Which pairs of style → **partitioning type** are correct? *(Select all)*", "options": [{"key": "A", "text": "Service-Based → Domain"}, {"key": "B", "text": "Microservices → Domain"}, {"key": "C", "text": "Event-Driven → Technical"}, {"key": "D", "text": "Space-Based → Technical"}, {"key": "E", "text": "Microservices → Technical"}, {"key": "F", "text": "Event-Driven → Domain"}], "correct": ["A", "B", "C", "D"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Ratings tables: Service-Based = Domain, Microservices = Domain, EDA = **Technical**, Space-Based = **Technical**. (From L4: Layered = Technical, Modular Monolith = Domain, Microkernel = both.)", "wrongExplanation": "E and F are the direct inversions of B and C.", "trap": "⚠ **Over-selection warning:** Assuming every *distributed* style is domain partitioned. EDA and Space-Based are **technical**."}, {"id": "L05Q16", "lectureNo": "05", "lectureTitle": "Distributed Architectural Styles", "lectureLabel": "Lecture 05 - Distributed Architectural Styles", "originalNumber": 16, "type": "multi", "question": "A system needs excellent deployability, testability, evolvability, scalability and fault tolerance, has clean domain data isolation, multiple owning teams, and a mature operations organisation. Which statements match the lecture? *(Select all)*", "options": [{"key": "A", "text": "Microservices is suitable"}, {"key": "B", "text": "Clear bounded contexts must be establishable"}, {"key": "C", "text": "Microservices rates ★★★★★ on modularity, maintainability, testability, deployability and evolvability"}, {"key": "D", "text": "Overall cost is expected to be low"}, {"key": "E", "text": "Strong operational automation is required"}, {"key": "F", "text": "Microservices is unsuitable if the domain is highly semantically coupled"}], "correct": ["A", "B", "C", "E", "F"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Microservices suitability list plus the automation requirements (containers, service discovery, monitoring, distributed tracing, API gateways). Ratings: cost $, Simplicity ★, Responsiveness ★★.", "wrongExplanation": "D = cost is the **highest** of all styles ($$$$$).", "trap": "⚠ **Over-selection warning:** D. Excellent ratings everywhere makes people forget the price and the ★ simplicity."}, {"id": "L05Q17", "lectureNo": "05", "lectureTitle": "Distributed Architectural Styles", "lectureLabel": "Lecture 05 - Distributed Architectural Styles", "originalNumber": 17, "type": "multi", "question": "Which are **weaknesses** of Event-Driven Architecture? *(Select all)*", "options": [{"key": "A", "text": "Low simplicity"}, {"key": "B", "text": "Low testability"}, {"key": "C", "text": "Nondeterministic workflows"}, {"key": "D", "text": "Difficult recoverability"}, {"key": "E", "text": "Poor evolvability"}, {"key": "F", "text": "Difficult workflow-state tracking"}], "correct": ["A", "B", "C", "D", "F"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "EDA ratings: Simplicity ★★, Testability ★★, but **Evolvability ★★★★★, Responsiveness ★★★★★, Fault tolerance ★★★★★**. Strengths also include high modularity/maintainability and asynchronous parallel processing.", "wrongExplanation": "E = Evolvability is one of EDA's **strongest** ratings (★★★★★).", "trap": "⚠ **Over-selection warning:** E. \"Hard to test and debug\" ≠ \"hard to evolve.\" EDA is difficult to *observe*, easy to *extend*."}, {"id": "L05Q18", "lectureNo": "05", "lectureTitle": "Distributed Architectural Styles", "lectureLabel": "Lecture 05 - Distributed Architectural Styles", "originalNumber": 18, "type": "multi", "question": "A team must choose between Service-Based and Microservices. Which statements correctly justify **Service-Based**? *(Select all)*", "options": [{"key": "A", "text": "Conventional ACID transactions within domain boundaries are valuable"}, {"key": "B", "text": "Moderate scalability is sufficient"}, {"key": "C", "text": "Lower cost and lower operational complexity are important"}, {"key": "D", "text": "The system is moving gradually from monolithic toward distributed"}, {"key": "E", "text": "Fine-grained independent scaling of every capability is required"}, {"key": "F", "text": "Modularity is needed without microservices-level complexity"}], "correct": ["A", "B", "C", "D", "F"], "hint": "Identify exactly what the question asks and compare each option with the lecture wording.", "explanation": "Service-Based is the pragmatic middle: cost $$, Simplicity ★★★, Scalability ★★★, Elasticity ★★, strong ACID support inside domain boundaries. Microservices: cost $$$$$, Simplicity ★, Scalability ★★★★★.", "wrongExplanation": "E = coarse-grained deployment/scaling units are a listed **weakness** of Service-Based; fine-grained scaling points to Microservices.", "trap": "⚠ **Over-selection warning:** E. Independent **scaling granularity** is the decisive discriminator between these two styles."}, {"id": "L05Q19", "lectureNo": "05", "lectureTitle": "Distributed Architectural Styles", "lectureLabel": "Lecture 05 - Distributed Architectural Styles", "originalNumber": 19, "type": "multi", "question": "Which needs can justify considering a distributed architecture? (Select all that apply.)", "options": [{"key": "A", "text": "Independent deployment of major parts"}, {"key": "B", "text": "Independent scalability"}, {"key": "C", "text": "Improved fault isolation"}, {"key": "D", "text": "Separate team ownership"}, {"key": "E", "text": "Frequent change in selected areas"}, {"key": "F", "text": "Choosing a fashionable architecture"}], "correct": ["A", "B", "C", "D", "E"], "hint": "Select architectural needs that benefit from physical separation, not fashion.", "explanation": "The lecture lists independent deployment/scalability, improved fault isolation, separate ownership and frequent change among the reasons to consider distribution.", "wrongExplanation": "F. Distribution should be driven by architectural need, not fashion.", "trap": "⚠ **Over-selection warning:** Modern or fashionable is not an architectural driver."}, {"id": "L05Q20", "lectureNo": "05", "lectureTitle": "Distributed Architectural Styles", "lectureLabel": "Lecture 05 - Distributed Architectural Styles", "originalNumber": 20, "type": "multi", "question": "Which concerns are introduced when a local component call becomes a remote interaction? (Select all that apply.)", "options": [{"key": "A", "text": "Network latency"}, {"key": "B", "text": "Serialization and deserialization"}, {"key": "C", "text": "Endpoint security"}, {"key": "D", "text": "Partial failures"}, {"key": "E", "text": "Contract management and operational monitoring"}, {"key": "F", "text": "Guaranteed elimination of data consistency problems"}], "correct": ["A", "B", "C", "D", "E"], "hint": "Remote boundaries add network, failure, contract and operational concerns.", "explanation": "Distribution adds concerns including latency, serialization, endpoint security, partial failures, contract management, monitoring and distributed data/transaction issues.", "wrongExplanation": "F. Distribution usually increases data consistency and workflow coordination problems rather than eliminating them.", "trap": "⚠ **Over-selection warning:** Distribution gains flexibility but adds operational and consistency complexity."}];
+const LECTURES = [{"no": "01", "title": "Introduction to Software Architecture", "label": "Lecture 01 - Introduction to Software Architecture", "count": 20}, {"no": "02", "title": "Quality Attributes, Scenarios and Tactics", "label": "Lecture 02 - Quality Attributes, Scenarios and Tactics", "count": 20}, {"no": "03", "title": "Architectural Thinking", "label": "Lecture 03 - Architectural Thinking", "count": 20}, {"no": "04", "title": "Monolithic Architectural Styles", "label": "Lecture 04 - Monolithic Architectural Styles", "count": 20}, {"no": "05", "title": "Distributed Architectural Styles", "label": "Lecture 05 - Distributed Architectural Styles", "count": 20}];
+
+const state = {
+  paper: [],
+  mode: "mixed",
+  answers: {},
+  flags: new Set(),
+  hintsUsed: new Set(),
+  locked: new Set(),
+  scores: {},
+  timerEnabled: false,
+  timerSeconds: 0,
+  timerInitialSeconds: 0,
+  timerHandle: null
+};
+
+const $ = id => document.getElementById(id);
+
+function escapeHtml(value){
+  return String(value ?? "")
+    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+function rich(value){
+  let s = escapeHtml(value ?? "");
+  s = s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  s = s.replace(/\*(.+?)\*/g, "<em>$1</em>");
+  s = s.replace(/`(.+?)`/g, "<code>$1</code>");
+  s = s.replace(/\n/g, "<br>");
+  return s;
+}
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function questionsForLecture(no){ return QUESTION_BANK.filter(q=>q.lectureNo===no); }
+
+function balancedMixed(count){
+  const pools = LECTURES.map(l => shuffle(questionsForLecture(l.no)));
+  const selected = [];
+  let idx = 0;
+  while(selected.length < count){
+    let addedThisRound = false;
+    for(let p=0;p<pools.length && selected.length<count;p++){
+      if(idx < pools[p].length){
+        selected.push(pools[p][idx]);
+        addedThisRound = true;
+      }
+    }
+    if(!addedThisRound) break;
+    idx++;
+  }
+  return shuffle(selected);
+}
+
+function buildPaper(){
+  const mode = $("modeSelect").value;
+  state.mode = mode;
+  if(mode === "mixed"){
+    state.paper = balancedMixed(Number($("mixedCount").value));
+  } else if(mode === "lecture"){
+    state.paper = [...questionsForLecture($("lectureSelect").value)];
+  } else {
+    state.paper = [...QUESTION_BANK];
+  }
+}
+
+function clearAttempt(){
+  state.answers = {};
+  state.flags = new Set();
+  state.hintsUsed = new Set();
+  state.locked = new Set();
+  state.scores = {};
+}
+
+function startQuiz(reusePaper=false){
+  if(!reusePaper) buildPaper();
+  clearAttempt();
+
+  state.timerEnabled = $("timerToggle").checked;
+  if(state.timerEnabled){
+    state.timerInitialSeconds = Math.max(60, Number($("timerMinutes").value || 30)*60);
+    state.timerSeconds = state.timerInitialSeconds;
+  } else {
+    state.timerInitialSeconds = 0;
+    state.timerSeconds = 0;
+  }
+
+  $("setupScreen").classList.add("hidden");
+  $("quizScreen").classList.remove("hidden");
+  $("mobileNavToggle").classList.remove("hidden");
+
+  renderPaper();
+  updateProgress();
+  startTimerIfNeeded();
+  window.scrollTo({top:0,behavior:"instant"});
+}
+
+function renderPaper(){
+  const container = $("questionsContainer");
+  container.innerHTML = "";
+  const titleMap = {
+    mixed: "Mixed Exam Paper",
+    lecture: state.paper[0]?.lectureLabel || "Single Lecture Practice",
+    all: "All Questions"
+  };
+  $("paperTitle").textContent = titleMap[state.mode];
+  $("paperSubtitle").textContent = `${state.paper.length} questions • Single Choice + Multiple Answer • Flag questions to revisit later`;
+  $("modeBadge").textContent = `${state.paper.length} questions`;
+
+  state.paper.forEach((q, idx)=>{
+    const card = document.createElement("article");
+    card.className = "question-card";
+    card.id = `card-${idx}`;
+    card.dataset.qid = q.id;
+
+    const typeLabel = q.type === "multi" ? "Multiple Answer" : "Single Choice";
+    card.innerHTML = `
+      <div class="qcard-head">
+        <span class="q-num">Question ${idx+1}</span>
+        <span class="lecture-pill">${escapeHtml(q.lectureLabel)}</span>
+        <span class="type-pill">${typeLabel}</span>
+        <div class="head-actions">
+          <button class="icon-btn flag-btn" data-action="flag" data-index="${idx}" title="Flag question for later" aria-label="Flag question for later">⚑</button>
+          <button class="icon-btn" data-action="hint" data-index="${idx}" title="Hint" aria-label="Hint">💡</button>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qtext">${rich(q.question)}</div>
+        ${q.type==="multi" ? `<div class="multi-warning">⚠ Wrong extra selections reduce marks.</div>` : ""}
+        <div class="options">
+          ${q.options.map(o=>`
+            <label class="option" data-key="${o.key}">
+              <input type="${q.type==="multi"?"checkbox":"radio"}" name="ans-${idx}" value="${o.key}">
+              <span><strong>${o.key}.</strong> ${rich(o.text)}</span>
+            </label>
+          `).join("")}
+        </div>
+        <div class="answer-actions">
+          ${q.type==="multi" ? `<button class="submit-answer" data-action="submit-multi" data-index="${idx}">Submit Answer</button>` : ""}
+          <span class="result-tag" id="result-${idx}"></span>
+          <button class="explain-btn hidden" data-action="explain" data-index="${idx}">View explanation</button>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+
+  container.querySelectorAll('input[type="radio"]').forEach(input=>{
+    input.addEventListener("change", e=>{
+      const card=e.target.closest(".question-card");
+      const idx=Number(card.id.replace("card-",""));
+      gradeSingle(idx, e.target.value);
+    });
+  });
+
+  container.addEventListener("click", handleCardAction);
+  renderNavigator();
+}
+
+function handleCardAction(e){
+  const btn=e.target.closest("button[data-action]");
+  if(!btn) return;
+  const idx=Number(btn.dataset.index);
+  const action=btn.dataset.action;
+  if(action==="hint") showHint(idx);
+  if(action==="flag") toggleFlag(idx);
+  if(action==="submit-multi") gradeMulti(idx);
+  if(action==="explain") showExplanation(idx, false);
+}
+
+function markLocked(card){
+  card.querySelectorAll("input").forEach(i=>i.disabled=true);
+  card.querySelectorAll(".option").forEach(o=>o.classList.add("locked"));
+  const submit=card.querySelector(".submit-answer");
+  if(submit) submit.disabled=true;
+}
+
+function gradeSingle(idx, selected){
+  const q=state.paper[idx];
+  if(state.locked.has(q.id)) return;
+  const correct=q.correct[0];
+  state.answers[q.id]=[selected];
+  state.locked.add(q.id);
+  const isCorrect=selected===correct;
+  state.scores[q.id]=isCorrect?1:0;
+
+  const card=$(`card-${idx}`);
+  markLocked(card);
+  card.querySelectorAll(".option").forEach(opt=>{
+    const key=opt.dataset.key;
+    if(key===correct) opt.classList.add("correct");
+    if(key===selected && !isCorrect) opt.classList.add("wrong");
+  });
+  const result=$(`result-${idx}`);
+  result.textContent=isCorrect?"✓ Correct":"✕ Incorrect";
+  result.className=`result-tag ${isCorrect?"good":"bad"}`;
+  card.querySelector(".explain-btn").classList.remove("hidden");
+
+  updateProgress();
+  renderNavigator();
+  if(!isCorrect) showExplanation(idx, true);
+}
+
+function gradeMulti(idx){
+  const q=state.paper[idx];
+  if(state.locked.has(q.id)) return;
+  const card=$(`card-${idx}`);
+  const selected=[...card.querySelectorAll('input[type="checkbox"]:checked')].map(x=>x.value);
+  if(selected.length===0){
+    showSimpleModal("Select an answer", "Choose at least one option before submitting.");
+    return;
+  }
+  state.answers[q.id]=selected;
+  state.locked.add(q.id);
+
+  const correctSet=new Set(q.correct);
+  let correctSelections=selected.filter(x=>correctSet.has(x)).length;
+  let wrongSelections=selected.filter(x=>!correctSet.has(x)).length;
+  const score=Math.max(0,Math.min(1,(correctSelections-wrongSelections)/q.correct.length));
+  state.scores[q.id]=score;
+
+  markLocked(card);
+  card.querySelectorAll(".option").forEach(opt=>{
+    const key=opt.dataset.key;
+    const wasSelected=selected.includes(key);
+    const isCorrect=correctSet.has(key);
+    if(wasSelected && isCorrect) opt.classList.add("correct");
+    if(wasSelected && !isCorrect) opt.classList.add("wrong");
+    if(!wasSelected && isCorrect) opt.classList.add("reveal-correct");
+  });
+
+  const full = score===1 && selected.length===q.correct.length;
+  const result=$(`result-${idx}`);
+  if(full){
+    result.textContent="✓ Correct";
+    result.className="result-tag good";
+  }else if(score>0){
+    result.textContent=`◐ Partial credit: ${(score*100).toFixed(0)}%`;
+    result.className="result-tag partial";
+  }else{
+    result.textContent="✕ Incorrect";
+    result.className="result-tag bad";
+  }
+  card.querySelector(".explain-btn").classList.remove("hidden");
+  updateProgress();
+  renderNavigator();
+  if(!full) showExplanation(idx, true);
+}
+
+function toggleFlag(idx){
+  const q=state.paper[idx];
+  if(state.flags.has(q.id)) state.flags.delete(q.id); else state.flags.add(q.id);
+  const btn=$(`card-${idx}`).querySelector(".flag-btn");
+  btn.classList.toggle("flag-active", state.flags.has(q.id));
+  renderNavigator();
+  updateProgress();
+}
+
+function showHint(idx){
+  const q=state.paper[idx];
+  state.hintsUsed.add(q.id);
+  const btn=$(`card-${idx}`).querySelector('[data-action="hint"]');
+  btn.classList.add("hint-used");
+  updateProgress();
+  showModal(`
+    <div class="modal-backdrop hint-modal" id="activeModal">
+      <div class="modal">
+        <div class="modal-head"><h3>Hint</h3><button class="modal-close" onclick="closeModal()">×</button></div>
+        <div class="hint-content">
+          <div>${rich(q.hint)}</div>
+        </div>
+      </div>
+    </div>`);
+}
+
+function selectedAnswerText(q, keys){
+  return keys.map(k=>{
+    const opt=q.options.find(o=>o.key===k);
+    return `${k}. ${opt?opt.text:""}`;
+  }).join("<br>");
+}
+function showExplanation(idx, incorrect){
+  const q=state.paper[idx];
+  const selected=state.answers[q.id] || [];
+  const correctText=selectedAnswerText(q,q.correct);
+  const yourText=selected.length?selectedAnswerText(q,selected):"No answer";
+  showModal(`
+    <div class="modal-backdrop" id="activeModal">
+      <div class="modal">
+        <div class="modal-head">
+          <h3>${incorrect ? "✕ Answer Review" : "Explanation"}</h3>
+          <button class="modal-close" onclick="closeModal()">×</button>
+        </div>
+        <div class="modal-body">
+          ${incorrect ? `<div class="wrongbox"><strong>Your answer:</strong><br>${yourText}</div>
+          <div class="correctbox" style="margin-top:10px"><strong>Correct answer:</strong><br>${correctText}</div>` : ""}
+          <h4>Explanation</h4>
+          <p>${rich(q.explanation)}</p>
+          <h4>Why other answers are wrong</h4>
+          <p>${rich(q.wrongExplanation)}</p>
+          <h4>Trap</h4>
+          <div class="trapbox">${rich(q.trap)}</div>
+        </div>
+      </div>
+    </div>`);
+}
+
+function renderNavigator(){
+  const grid=$("questionGrid");
+  grid.innerHTML="";
+  state.paper.forEach((q,idx)=>{
+    const b=document.createElement("button");
+    b.className="qnav";
+    b.textContent=idx+1;
+    if(state.locked.has(q.id)) b.classList.add("answered");
+    if(state.flags.has(q.id)) b.classList.add("flagged");
+    b.title=`Question ${idx+1} — ${q.lectureLabel}`;
+    b.onclick=()=>{
+      $(`card-${idx}`).scrollIntoView({behavior:"smooth",block:"start"});
+      $("sidebar").classList.remove("mobile-open");
+    };
+    grid.appendChild(b);
+  });
+
+  const flagged=$("flaggedItems");
+  const entries=state.paper.map((q,idx)=>({q,idx})).filter(x=>state.flags.has(x.q.id));
+  if(entries.length===0){
+    flagged.className="flagged-empty";
+    flagged.textContent="No flagged questions.";
+  }else{
+    flagged.className="";
+    flagged.innerHTML=entries.map(x=>`<button onclick="document.getElementById('card-${x.idx}').scrollIntoView({behavior:'smooth',block:'start'})">Q${x.idx+1}</button>`).join("");
+  }
+}
+
+function updateProgress(){
+  const answered=state.locked.size;
+  const total=state.paper.length || 1;
+  const points=Object.values(state.scores).reduce((a,b)=>a+b,0);
+  const pct=(points/total)*100;
+  $("answeredStat").textContent=`${answered} / ${state.paper.length}`;
+  $("scoreStat").textContent=`${pct.toFixed(1)}%`;
+  $("hintStat").textContent=state.hintsUsed.size;
+  $("flagStat").textContent=state.flags.size;
+  $("progressFill").style.width=`${(answered/total)*100}%`;
+}
+
+function finishPaper(auto=false){
+  if(state.timerHandle){clearInterval(state.timerHandle);state.timerHandle=null;}
+  const total=state.paper.length;
+  let full=0,partial=0,wrong=0;
+  state.paper.forEach(q=>{
+    if(!state.locked.has(q.id)) return;
+    const s=state.scores[q.id] ?? 0;
+    if(s===1) full++;
+    else if(s>0) partial++;
+    else wrong++;
+  });
+  const unanswered=total-full-partial-wrong;
+  const points=Object.values(state.scores).reduce((a,b)=>a+b,0);
+  const pct=total?points/total*100:0;
+  let recommendation="";
+  if(pct>=85) recommendation="Strong exam readiness. Review flagged questions and traps once more.";
+  else if(pct>=70) recommendation="Good progress. Revisit partial and wrong answers before the exam.";
+  else if(pct>=50) recommendation="Needs targeted revision. Focus on explanations and repeated traps.";
+  else recommendation="Re-study the lecture concepts before attempting another mixed paper.";
+
+  showModal(`
+    <div class="modal-backdrop" id="activeModal">
+      <div class="modal">
+        <div class="modal-head"><h3>${auto?"Time is up — Final Result":"Final Result"}</h3><button class="modal-close" onclick="closeModal()">×</button></div>
+        <div class="modal-body">
+          <div style="font-size:2rem;font-weight:900;color:var(--navy);text-align:center">${pct.toFixed(1)}%</div>
+          <div class="result-grid">
+            <div class="result-stat"><div class="v">${full}</div><div class="k">Fully correct</div></div>
+            <div class="result-stat"><div class="v">${partial}</div><div class="k">Partial</div></div>
+            <div class="result-stat"><div class="v">${wrong}</div><div class="k">Wrong</div></div>
+            <div class="result-stat"><div class="v">${unanswered}</div><div class="k">Unanswered</div></div>
+            <div class="result-stat"><div class="v">${state.hintsUsed.size}</div><div class="k">Hints used</div></div>
+            <div class="result-stat"><div class="v">${state.flags.size}</div><div class="k">Flagged</div></div>
+          </div>
+          <p><strong>Recommendation:</strong> ${recommendation}</p>
+        </div>
+      </div>
+    </div>`);
+}
+
+function resetSamePaper(){
+  if(!confirm("Clear all answers, scores, flags and hints for this same paper?")) return;
+  clearAttempt();
+  if(state.timerEnabled){
+    state.timerSeconds=state.timerInitialSeconds;
+  }
+  renderPaper();
+  updateProgress();
+  startTimerIfNeeded();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function newPaper(){
+  if(!confirm("Generate a new paper? Your current answers will be cleared.")) return;
+  if(state.timerHandle){clearInterval(state.timerHandle);state.timerHandle=null;}
+  $("quizScreen").classList.add("hidden");
+  $("setupScreen").classList.remove("hidden");
+  $("mobileNavToggle").classList.add("hidden");
+  $("timerDisplay").classList.add("hidden");
+  $("sidebar").classList.remove("mobile-open");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function formatTime(sec){
+  sec=Math.max(0,sec);
+  const m=Math.floor(sec/60), s=sec%60;
+  return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+}
+function startTimerIfNeeded(){
+  if(state.timerHandle){clearInterval(state.timerHandle);state.timerHandle=null;}
+  const td=$("timerDisplay");
+  if(!state.timerEnabled){
+    td.classList.add("hidden"); td.classList.remove("danger"); return;
+  }
+  td.classList.remove("hidden");
+  td.textContent=formatTime(state.timerSeconds);
+  td.classList.toggle("danger",state.timerSeconds<=300);
+  state.timerHandle=setInterval(()=>{
+    state.timerSeconds--;
+    td.textContent=formatTime(state.timerSeconds);
+    td.classList.toggle("danger",state.timerSeconds<=300);
+    if(state.timerSeconds<=0){
+      clearInterval(state.timerHandle);state.timerHandle=null;
+      finishPaper(true);
+    }
+  },1000);
+}
+
+function showModal(markup){ $("modalRoot").innerHTML=markup; }
+function closeModal(){ $("modalRoot").innerHTML=""; }
+function showSimpleModal(title,msg){
+  showModal(`<div class="modal-backdrop" id="activeModal"><div class="modal" style="max-width:430px"><div class="modal-head"><h3>${escapeHtml(title)}</h3><button class="modal-close" onclick="closeModal()">×</button></div><div class="modal-body">${escapeHtml(msg)}</div></div></div>`);
+}
+window.closeModal=closeModal;
+
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+$("modalRoot").addEventListener("click",e=>{if(e.target.classList.contains("modal-backdrop"))closeModal()});
+
+function initSetup(){
+  LECTURES.forEach(l=>{
+    const opt=document.createElement("option");
+    opt.value=l.no;
+    opt.textContent=l.label;
+    $("lectureSelect").appendChild(opt);
+  });
+  $("modeSelect").addEventListener("change",()=>{
+    const mode=$("modeSelect").value;
+    $("lectureField").classList.toggle("hidden",mode!=="lecture");
+    $("mixedCountField").classList.toggle("hidden",mode!=="mixed");
+  });
+  $("timerToggle").addEventListener("change",()=>{
+    const on=$("timerToggle").checked;
+    $("timerStateText").textContent=on?"On":"Off";
+    $("timerConfig").classList.toggle("hidden",!on);
+  });
+  $("startBtn").addEventListener("click",()=>startQuiz(false));
+  $("finishBtn").addEventListener("click",()=>finishPaper(false));
+  $("resetBtn").addEventListener("click",resetSamePaper);
+  $("newPaperBtn").addEventListener("click",newPaper);
+  $("mobileNavToggle").addEventListener("click",()=>$("sidebar").classList.toggle("mobile-open"));
+}
+initSetup();
+</script>
+</body>
+</html>
